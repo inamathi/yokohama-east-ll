@@ -1,11 +1,321 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "@/layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const latestNews = [
+  {
+    tag: "お知らせ",
+    date: "2025-05-01",
+    title: "新入団選手募集中 — 体験練習随時受付",
+  },
+  {
+    tag: "試合結果",
+    date: "2025-04-20",
+    title: "練習試合 vs 港南リトルリーグ 7-3 勝利",
+  },
+  {
+    tag: "大会情報",
+    date: "2025-04-10",
+    title: "春季大会 一回戦突破！次戦は5/18",
+  },
+];
+
+const calendarIds = [
+  "yellweb1972@gmail.com",
+  "bqkct1fj8coo6ercf8rrgsste0@group.calendar.google.com",
+  "1lf6lqeapdv7dkcbp93jsrt30k@group.calendar.google.com",
+  "lat305u00k6lrfatpqldpef5m0@group.calendar.google.com",
+];
+
+const calendarSrc = calendarIds
+  .map((id) => `src=${encodeURIComponent(id)}`)
+  .join("&");
+
+const calendarUrl = `https://calendar.google.com/calendar/embed?${calendarSrc}&ctz=Asia%2FTokyo&hl=ja&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=1`;
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="横浜東リトルリーグ">
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-label">Yokohama East Little League</p>
+      <h1>振らなきゃ<em>ヒット</em>は生まれない！</h1>
+      <p class="hero-sub">
+        何事もチャレンジしなければ結果はわかりません<br />
+        神奈川東部を拠点に活動するリトルリーグ。<br
+        />小学生から野球を始めたい子、大歓迎です。
+      </p>
+      <div class="hero-btns">
+        <a href="/schedule" class="btn btn-primary">練習／試合日程を見る</a>
+        <a href="/contact" class="btn btn-outline">お問い合わせ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ニュース -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Latest <span>News</span></h2>
+      <div class="section-line"></div>
+      <a href="/news" class="section-more">すべて見る →</a>
+    </div>
+    <div class="news-grid">
+      {
+        latestNews.map((item) => (
+          <article class="news-card">
+            <div class="tag">{item.tag}</div>
+            <h3>{item.title}</h3>
+            <p class="date">{item.date}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- カレンダー -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">Schedule <span>カレンダー</span></h2>
+      <div class="section-line"></div>
+      <a href="/schedule" class="section-more">詳細を見る →</a>
+    </div>
+    <div class="calendar-legend">
+      <span class="legend-item legend-all">横浜東全体</span>
+      <span class="legend-item legend-major">メジャー</span>
+      <span class="legend-item legend-junior">ジュニア</span>
+      <span class="legend-item legend-minor">マイナー</span>
+    </div>
+    <div class="calendar-wrap">
+      <iframe
+        src={calendarUrl}
+        style="height:600px;"
+        frameborder="0"
+        scrolling="no"></iframe>
+    </div>
+    <p class="calendar-note">
+      ※
+      予定は変更になる場合があります。最新情報はLINEグループでもお知らせします。
+    </p>
+  </section>
 </Layout>
+
+<style lang="scss">
+  @import "../styles/global.scss";
+
+  // ヒーロー
+  .hero {
+    background: linear-gradient(135deg, $navy 0%, #0d2244 60%, #071830 100%);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    padding: 4rem 1.5rem;
+
+    &-content {
+      max-width: 600px;
+    }
+
+    &-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: $orange;
+      border: 1px solid $orange;
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: $font-display;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+
+      em {
+        font-style: normal;
+        color: $orange;
+      }
+    }
+
+    &-sub {
+      color: #aac0d5;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    &-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+  }
+
+  // ボタン
+  .btn {
+    font-family: $font-display;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.75rem;
+    border-radius: 3px;
+    transition: all 0.2s;
+    cursor: pointer;
+
+    &-primary {
+      background: $orange;
+      color: $white;
+
+      &:hover {
+        background: $orange-lt;
+        transform: translateY(-2px);
+      }
+    }
+
+    &-outline {
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: $white;
+
+      &:hover {
+        border-color: $white;
+        background: rgba(255, 255, 255, 0.08);
+      }
+    }
+  }
+
+  // セクション共通
+  .section {
+    padding: 3rem 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    &-title {
+      font-family: $font-display;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+
+      span {
+        color: $orange;
+      }
+    }
+
+    &-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, #{$orange} 0%, transparent 100%);
+    }
+
+    &-more {
+      font-size: 0.8rem;
+      color: $orange;
+      white-space: nowrap;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // ニュースカード
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .news-card {
+    background: #102040;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 1.25rem;
+    transition:
+      border-color 0.2s,
+      transform 0.2s;
+
+    &:hover {
+      border-color: $orange;
+      transform: translateY(-3px);
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: $orange;
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .date {
+      font-size: 0.78rem;
+      color: $gray;
+    }
+  }
+
+  // カレンダー
+  .calendar-legend {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.2rem 0.75rem;
+    border-radius: 2px;
+
+    &.legend-all {
+      background: rgba(213, 204, 255, 0.2);
+      color: #d5ccff;
+    }
+    &.legend-major {
+      background: rgba(59, 26, 189, 0.3);
+      color: #a090ef;
+    }
+    &.legend-minor {
+      background: rgba(255, 144, 33, 0.2);
+      color: #ff9021;
+    }
+    &.legend-junior {
+      background: rgba(75, 153, 210, 0.2);
+      color: #4b99d2;
+    }
+  }
+
+  .calendar-wrap {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+  }
+
+  .calendar-note {
+    font-size: 0.78rem;
+    color: $gray;
+    margin-top: 0.75rem;
+  }
+</style>
