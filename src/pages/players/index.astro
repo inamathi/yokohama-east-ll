@@ -7,24 +7,6 @@ const tabs = [
   { id: "junior", label: "ジュニア",  commentLabel: "ひとこと" },
   { id: "alumni", label: "卒団生",    commentLabel: "5年後の自分へ" },
 ];
-
-const samplePlayers = {
-  major:  [
-    { name: "Taro. Y",  grade: "6年生", comment: "Never give up" },
-    { name: "Kenji. M", grade: "6年生", comment: "一球入魂" },
-    { name: "Shu. T",   grade: "5年生", comment: "全力疾走" },
-    { name: "Riku. A",  grade: "5年生", comment: "諦めない" },
-  ],
-  minor:  [
-    { name: "Haruto. K", grade: "4年生", comment: "大谷翔平" },
-    { name: "Sota. N",   grade: "4年生", comment: "山田哲人" },
-  ],
-  junior: [
-    { name: "Ren. O",  grade: "2年生", comment: "やきゅうたのしい！" },
-    { name: "Hana. F", grade: "1年生", comment: "ほーむらんうちたい" },
-  ],
-  alumni: [],
-};
 ---
 
 <Layout title="選手紹介 | 横浜東リトルリーグ">
@@ -36,22 +18,16 @@ const samplePlayers = {
     </div>
   </div>
 
-  <!-- タブバー -->
   <div class="tab-bar">
     <div class="container tab-bar__inner">
       {tabs.map((tab, i) => (
-        <button
-          class={`tab-btn ${i === 0 ? "is-active" : ""}`}
-          data-tab={tab.id}
-          data-comment-label={tab.commentLabel}
-        >
+        <button class={`tab-btn ${i === 0 ? "is-active" : ""}`} data-tab={tab.id} data-comment-label={tab.commentLabel}>
           {tab.label}
         </button>
       ))}
     </div>
   </div>
 
-  <!-- 第12期バナー -->
   <div class="alumni-banner">
     <div class="container alumni-banner__inner">
       <span class="alumni-banner__title">第12期（2026卒団）</span>
@@ -60,11 +36,8 @@ const samplePlayers = {
     </div>
   </div>
 
-  <!-- 選手グリッド -->
   <div class="container players-wrap">
-    <div class="players-grid" id="playersGrid">
-      <!-- JSで描画 -->
-    </div>
+    <div class="players-grid" id="playersGrid"></div>
   </div>
 
 </Layout>
@@ -85,17 +58,17 @@ const samplePlayers = {
 
 .tab-btn {
   flex: 1;
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   font-weight: 700;
   color: $text-muted;
   background: none;
   border: none;
   border-top: 2px solid transparent;
-  padding: 12px 4px;
+  padding: 1.2rem 0.4rem;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 
-  @include pc { font-size: 13px; padding: 14px 24px; flex: none; }
+  @include pc { padding: 1.4rem 2.4rem; flex: none; }
 
   &.is-active {
     color: $text-primary;
@@ -109,26 +82,26 @@ const samplePlayers = {
   &__inner {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    gap: 1.6rem;
+    padding-top: 1.4rem;
+    padding-bottom: 1.4rem;
   }
 
   &__title {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-primary;
     white-space: nowrap;
   }
 
   &__desc {
-    font-size: 12px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     flex: 1;
   }
 
   &__link {
-    font-size: 12px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-primary;
     background: none;
@@ -141,14 +114,14 @@ const samplePlayers = {
 }
 
 .players-wrap {
-  padding-top: 24px;
-  padding-bottom: 60px;
+  padding-top: 2.4rem;
+  padding-bottom: 6.0rem;
 }
 
 .players-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 1.2rem;
 
   @include tablet { grid-template-columns: repeat(3, 1fr); }
   @include pc     { grid-template-columns: repeat(4, 1fr); }
@@ -166,35 +139,35 @@ const samplePlayers = {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     color: $text-muted;
   }
 
-  &__body { padding: 12px; }
+  &__body { padding: 1.2rem; }
 
   &__name {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-primary;
-    margin-bottom: 2px;
+    margin-bottom: 0.2rem;
   }
 
   &__grade {
-    font-size: 10px;
+    font-size: $fs-xs; // 1.0rem = 10px
     color: $text-muted;
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
   }
 
   &__comment-label {
-    font-size: 8px;
+    font-size: 0.9rem; // 9px
     font-weight: 700;
     color: $cyan;
-    margin-bottom: 2px;
+    margin-bottom: 0.2rem;
     display: block;
   }
 
   &__comment {
-    font-size: 12px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     line-height: 1.5;
   }
@@ -203,9 +176,9 @@ const samplePlayers = {
 .empty-message {
   grid-column: 1 / -1;
   text-align: center;
-  font-size: 13px;
+  font-size: $fs-base; // 1.3rem = 13px
   color: $text-muted;
-  padding: 48px 0;
+  padding: 4.8rem 0;
 }
 </style>
 
@@ -264,7 +237,7 @@ function render() {
   `).join("");
 }
 
-function switchTab(tabId: string) {
+function switchTab(tabId) {
   currentTab = tabId;
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.classList.toggle("is-active", btn.getAttribute("data-tab") === tabId);
@@ -273,7 +246,7 @@ function switchTab(tabId: string) {
 }
 
 document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab") || "major"));
+  btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
 });
 
 document.querySelector(".alumni-banner__link")?.addEventListener("click", () => switchTab("alumni"));

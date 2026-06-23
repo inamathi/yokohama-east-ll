@@ -12,11 +12,8 @@ import Layout from "@/layouts/Layout.astro";
   </div>
 
   <div class="container contact-wrap">
-
     <div class="contact-grid">
-
-      <!-- フォーム -->
-      <div class="contact-form" id="contactForm">
+      <div class="contact-form">
         <div class="field-group">
           <label class="field-label">お名前 <span class="required">必須</span></label>
           <input type="text" class="field-input" placeholder="例：山田 太郎" id="name" />
@@ -41,7 +38,6 @@ import Layout from "@/layouts/Layout.astro";
           <label class="field-label">メッセージ <span class="required">必須</span></label>
           <textarea class="field-input field-textarea" placeholder="お問い合わせ内容をご記入ください" id="message" rows="5"></textarea>
         </div>
-
         <div class="tel-section">
           <div class="field-group">
             <label class="field-label">携帯電話 <span class="optional">任意</span></label>
@@ -49,8 +45,6 @@ import Layout from "@/layouts/Layout.astro";
             <input type="tel" class="field-input" placeholder="例：090-0000-0000" id="tel" />
           </div>
         </div>
-
-        <!-- プライバシー -->
         <div class="privacy-accordion" id="privacyAccordion">
           <button class="privacy-accordion__toggle" aria-expanded="false">
             個人情報の取り扱いについて
@@ -60,12 +54,10 @@ import Layout from "@/layouts/Layout.astro";
             <p>ご入力いただいた個人情報は、お問い合わせへの返信および体験参加・入団に関するご連絡のみに使用します。第三者への提供や、目的外の利用は一切行いません。</p>
           </div>
         </div>
-
         <button class="btn btn--primary submit-btn" id="submitBtn">送信する</button>
         <div class="form-message" id="formMessage"></div>
       </div>
 
-      <!-- 案内 -->
       <div class="contact-info">
         <h2 class="contact-info__title">体験参加について</h2>
         <p class="contact-info__text">
@@ -74,7 +66,6 @@ import Layout from "@/layouts/Layout.astro";
           通常2営業日以内にご返信いたします。
         </p>
       </div>
-
     </div>
   </div>
 
@@ -84,89 +75,81 @@ import Layout from "@/layouts/Layout.astro";
 @use 'var' as *;
 
 .contact-wrap {
-  padding-top: 40px;
-  padding-bottom: 60px;
+  padding-top: 4.0rem;
+  padding-bottom: 6.0rem;
 }
 
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 4.0rem;
 
-  @include pc {
-    grid-template-columns: 1fr 320px;
-    align-items: start;
-  }
+  @include pc { grid-template-columns: 1fr 32rem; align-items: start; }
 }
 
-// フォーム
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 0.8rem;
+  margin-bottom: 2.0rem;
 }
 
 .field-label {
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   font-weight: 700;
   color: $text-secondary;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.6rem;
 }
 
 .required {
-  font-size: 8px;
+  font-size: 0.9rem; // 9px
   background: #dc3c3c;
   color: $white;
-  padding: 2px 5px;
+  padding: 0.2rem 0.5rem;
   border-radius: 3px;
 }
 
 .optional {
-  font-size: 10px;
+  font-size: $fs-xs; // 1.0rem = 10px
   color: $text-muted;
 }
 
 .field-note {
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   color: $text-muted;
-  margin-top: -4px;
+  margin-top: -0.4rem;
 }
 
 .field-input {
   background: #16243f;
   border: 1px solid $border;
   border-radius: 6px;
-  padding: 12px;
-  font-size: 14px;
+  padding: 1.2rem;
+  font-size: $fs-md; // 1.5rem = 15px
   font-family: $font-body;
   color: $text-primary;
   width: 100%;
   transition: border-color 0.2s;
 
   &::placeholder { color: $text-muted; }
-  &:focus {
-    outline: none;
-    border-color: $cyan;
-  }
+  &:focus { outline: none; border-color: $cyan; }
 }
 
-.field-textarea { resize: vertical; min-height: 120px; }
+.field-textarea { resize: vertical; min-height: 12rem; }
 
 .tel-section {
   background: $navy-mid;
   border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 20px;
+  padding: 1.6rem;
+  margin-bottom: 2.0rem;
 
   .field-group { margin-bottom: 0; }
 }
 
-// プライバシーアコーディオン
 .privacy-accordion {
-  margin-bottom: 24px;
+  margin-bottom: 2.4rem;
 
   &__toggle {
     width: 100%;
@@ -176,8 +159,8 @@ import Layout from "@/layouts/Layout.astro";
     background: $navy-mid;
     border: none;
     border-radius: 6px;
-    padding: 12px 16px;
-    font-size: 13px;
+    padding: 1.2rem 1.6rem;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-secondary;
     cursor: pointer;
@@ -186,59 +169,44 @@ import Layout from "@/layouts/Layout.astro";
     &:hover { color: $text-primary; }
   }
 
-  &__icon { font-size: 9px; color: $text-muted; transition: transform 0.2s; }
+  &__icon { font-size: 0.9rem; color: $text-muted; transition: transform 0.2s; }
   &[data-open] &__icon { transform: rotate(180deg); }
 
   &__body {
     background: $navy-mid;
     border-radius: 0 0 6px 6px;
-    padding: 12px 16px;
-    font-size: 12px;
+    padding: 1.2rem 1.6rem;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     line-height: 1.75;
-    margin-top: 2px;
+    margin-top: 0.2rem;
   }
 }
 
-.submit-btn {
-  width: 100%;
-  padding: 16px;
-  font-size: 16px;
-}
+.submit-btn { width: 100%; padding: 1.6rem; font-size: $fs-lg; }
 
 .form-message {
-  margin-top: 12px;
-  font-size: 13px;
+  margin-top: 1.2rem;
+  font-size: $fs-base; // 1.3rem = 13px
   text-align: center;
 
   &.success { color: $cyan; }
   &.error   { color: #ff6b6b; }
 }
 
-// 案内
 .contact-info {
   background: $navy-mid;
   border-radius: 8px;
-  padding: 24px;
+  padding: 2.4rem;
 
-  &__title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-
-  &__text {
-    font-size: 13px;
-    color: $text-secondary;
-    line-height: 1.8;
-  }
+  &__title { font-size: $fs-lg; font-weight: 700; margin-bottom: 1.6rem; }
+  &__text  { font-size: $fs-base; color: $text-secondary; line-height: 1.8; }
 }
 </style>
 
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5lvHNi8kMbiMZB-QU_VMXYQE7of6b5eVaF6cF82fggJWPY/exec";
 
-// アコーディオン
 const accordion = document.getElementById('privacyAccordion');
 const toggle = accordion?.querySelector('.privacy-accordion__toggle');
 const body = accordion?.querySelector('.privacy-accordion__body');
@@ -250,25 +218,23 @@ toggle?.addEventListener('click', () => {
   else        { body?.removeAttribute('hidden');  accordion?.setAttribute('data-open', ''); }
 });
 
-// 送信
 const submitBtn = document.getElementById('submitBtn');
 const formMessage = document.getElementById('formMessage');
 
 submitBtn?.addEventListener('click', async () => {
-  const name         = (document.getElementById('name') as HTMLInputElement)?.value.trim();
-  const grade        = (document.getElementById('grade') as HTMLInputElement)?.value.trim();
-  const email        = (document.getElementById('email') as HTMLInputElement)?.value.trim();
-  const emailConfirm = (document.getElementById('emailConfirm') as HTMLInputElement)?.value.trim();
-  const area         = (document.getElementById('area') as HTMLInputElement)?.value.trim();
-  const message      = (document.getElementById('message') as HTMLTextAreaElement)?.value.trim();
-  const tel          = (document.getElementById('tel') as HTMLInputElement)?.value.trim();
+  const name         = document.getElementById('name')?.value.trim();
+  const grade        = document.getElementById('grade')?.value.trim();
+  const email        = document.getElementById('email')?.value.trim();
+  const emailConfirm = document.getElementById('emailConfirm')?.value.trim();
+  const area         = document.getElementById('area')?.value.trim();
+  const message      = document.getElementById('message')?.value.trim();
+  const tel          = document.getElementById('tel')?.value.trim();
 
   if (!name || !grade || !email || !area || !message) {
     formMessage.textContent = '必須項目を入力してください。';
     formMessage.className = 'form-message error';
     return;
   }
-
   if (email !== emailConfirm) {
     formMessage.textContent = 'メールアドレスが一致しません。';
     formMessage.className = 'form-message error';

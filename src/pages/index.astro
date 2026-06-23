@@ -127,11 +127,11 @@ const categories = [
 
   @include pc {
     flex-direction: row;
-    min-height: 560px;
+    min-height: 56rem;
   }
 
   &__left {
-    padding: 48px $margin-mobile 40px;
+    padding: 4.8rem $margin-mobile 4.0rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -139,42 +139,42 @@ const categories = [
 
     @include pc {
       flex: 0 0 50%;
-      padding: 80px $margin-pc;
+      padding: 8.0rem $margin-pc;
     }
   }
 
   &__accent {
     width: 4px;
-    height: 60px;
+    height: 6.0rem;
     background: $pink;
     border-radius: 2px;
-    margin-bottom: 12px;
+    margin-bottom: 1.2rem;
   }
 
   &__sub {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $cyan;
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
   }
 
   &__title {
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-size: clamp(#{$fs-3xl}, 8vw, 4.8rem);
     font-weight: 700;
     line-height: 1.2;
-    margin-bottom: 20px;
+    margin-bottom: 2.0rem;
   }
 
   &__desc {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     color: $text-secondary;
     line-height: 1.8;
-    margin-bottom: 32px;
+    margin-bottom: 3.2rem;
   }
 
   &__right {
     flex: 1;
-    min-height: 240px;
+    min-height: 24rem;
     background: rgba(255,255,255,0.05);
     display: flex;
     align-items: center;
@@ -184,7 +184,7 @@ const categories = [
   }
 
   &__photo-placeholder {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     color: $text-muted;
   }
 }
@@ -192,14 +192,14 @@ const categories = [
 // ── 活動予定 ──
 .schedule-section {
   background: $navy;
-  padding: 40px 0;
+  padding: 4.0rem 0;
   border-top: 1px solid $border;
 }
 
 .schedule-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 2.4rem;
 
   @include pc {
     grid-template-columns: repeat(3, 1fr);
@@ -208,10 +208,10 @@ const categories = [
 
 .schedule-col {
   &__header {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
-    padding: 6px 12px;
-    margin-bottom: 8px;
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 0.8rem;
     border-left: 3px solid;
 
     &--major  { border-color: $cat-major-bg;  color: $text-primary; }
@@ -222,17 +222,17 @@ const categories = [
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4rem;
   }
 }
 
 .schedule-item {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  padding: 10px 12px;
+  gap: 1.2rem;
+  padding: 1.0rem 1.2rem;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
 
   &:nth-child(odd) { background: $navy-mid; }
 
@@ -240,28 +240,28 @@ const categories = [
     font-weight: 700;
     color: $cyan;
     white-space: nowrap;
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
   }
 
   &__label { color: $text-secondary; }
 }
 
 .schedule-loading {
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   color: $text-muted;
-  padding: 10px 12px;
+  padding: 1.0rem 1.2rem;
 }
 
 // ── リード文 ──
 .lead-section {
   background: $navy-mid;
-  padding: 40px 0;
+  padding: 4.0rem 0;
   border-top: 1px solid $border;
 
   .container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 2.4rem;
 
     @include pc {
       flex-direction: row;
@@ -271,7 +271,7 @@ const categories = [
   }
 
   &__text {
-    font-size: clamp(1rem, 2vw, 1.125rem);
+    font-size: clamp(#{$fs-md}, 2vw, #{$fs-lg}); // 15px〜18px
     font-weight: 700;
     line-height: 1.7;
     color: $text-primary;
@@ -281,14 +281,14 @@ const categories = [
 // ── カテゴリ紹介 ──
 .category-section {
   background: $navy;
-  padding: 48px 0;
+  padding: 4.8rem 0;
   border-top: 1px solid $border;
 }
 
 .category-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 1.6rem;
 
   @include pc {
     grid-template-columns: repeat(3, 1fr);
@@ -307,43 +307,43 @@ const categories = [
   }
 
   &__body {
-    padding: 16px;
+    padding: 1.6rem;
   }
 
   &__meta {
     display: flex;
     align-items: baseline;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
   }
 
   &__step {
-    font-size: 9px;
+    font-size: 0.9rem; // 9px
     font-weight: 700;
     color: $text-muted;
   }
 
   &__label {
-    font-size: 9px;
+    font-size: 0.9rem; // 9px
     font-weight: 700;
     color: $text-muted;
   }
 
   &__age {
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     color: $text-muted;
     margin-left: auto;
   }
 
   &__concept {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     font-weight: 700;
     color: $text-primary;
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
   }
 
   &__desc {
-    font-size: 12px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     line-height: 1.75;
   }
@@ -352,20 +352,20 @@ const categories = [
 // ── スポンサー ──
 .sponsor-section {
   background: $navy-mid;
-  padding: 32px 0;
+  padding: 3.2rem 0;
   border-top: 1px solid $border;
 }
 
 .sponsor-grid {
   display: flex;
-  gap: 16px;
+  gap: 1.6rem;
   flex-wrap: wrap;
-  margin-top: 16px;
+  margin-top: 1.6rem;
 }
 
 .sponsor-placeholder {
-  width: 120px;
-  height: 56px;
+  width: 12.0rem;
+  height: 5.6rem;
   background: rgba(255,255,255,0.05);
   border-radius: 4px;
 }

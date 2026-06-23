@@ -42,14 +42,14 @@ const sampleAlbums = [
 @use 'var' as *;
 
 .album-wrap {
-  padding-top: 32px;
-  padding-bottom: 60px;
+  padding-top: 3.2rem;
+  padding-bottom: 6.0rem;
 }
 
 .album-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 1.2rem;
 
   @include tablet { grid-template-columns: repeat(3, 1fr); }
   @include pc     { grid-template-columns: repeat(4, 1fr); }
@@ -73,23 +73,21 @@ const sampleAlbums = [
   }
 
   &__thumb-label {
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     color: $text-muted;
   }
 
-  &__body {
-    padding: 12px;
-  }
+  &__body { padding: 1.2rem; }
 
   &__ym {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-primary;
-    margin-bottom: 2px;
+    margin-bottom: 0.2rem;
   }
 
   &__count {
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     color: $text-muted;
   }
 }

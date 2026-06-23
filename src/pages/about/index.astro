@@ -2,21 +2,15 @@
 import Layout from "@/layouts/Layout.astro";
 
 const categories = [
-  {
-    step: "STEP 01", label: "JUNIOR", title: "ジュニア", age: "〜小3の夏",
+  { step: "STEP 01", label: "JUNIOR", title: "ジュニア", age: "〜小3の夏",
     concept: "まず、野球を好きになる。",
-    desc: "キャッチボールから始め、野球の楽しさを体全体で覚える時期。うまくできなくていい。グラウンドに来るのが楽しみになることが、すべての出発点です。",
-  },
-  {
-    step: "STEP 02", label: "MINOR", title: "マイナー", age: "小3の夏〜小5の夏",
+    desc: "キャッチボールから始め、野球の楽しさを体全体で覚える時期。うまくできなくていい。グラウンドに来るのが楽しみになることが、すべての出発点です。" },
+  { step: "STEP 02", label: "MINOR", title: "マイナー", age: "小3の夏〜小5の夏",
     concept: "基礎技術を、着実に身につける。",
-    desc: "投げる・打つ・守るの基本を反復練習で固める時期。仲間と競い合いながら、自分の成長を実感できるステージです。",
-  },
-  {
-    step: "STEP 03", label: "MAJOR", title: "メジャー", age: "小5の夏〜",
+    desc: "投げる・打つ・守るの基本を反復練習で固める時期。仲間と競い合いながら、自分の成長を実感できるステージです。" },
+  { step: "STEP 03", label: "MAJOR", title: "メジャー", age: "小5の夏〜",
     concept: "野球を深く理解し、中学へつなぐ。",
-    desc: "リーグ戦・地区大会を戦いながら、戦術・判断力・チームワークを磨く時期。この経験が中学野球への大きな土台になります。",
-  },
+    desc: "リーグ戦・地区大会を戦いながら、戦術・判断力・チームワークを磨く時期。この経験が中学野球への大きな土台になります。" },
 ];
 ---
 
@@ -30,12 +24,10 @@ const categories = [
   </div>
 
   <div class="container about-wrap">
-
     <p class="about-intro">
       リトルリーグは1939年にアメリカで生まれた、世界100ヶ国以上で展開する国際的な少年野球組織です。横浜東リトルリーグは神奈川東地区に所属し、小学生年代の子どもたちが野球を通じて成長できる場を提供しています。
     </p>
 
-    <!-- 成長ステップ -->
     <div class="steps-header">
       <span class="section-label">GROWTH STEPS</span>
       <h2 class="section-title">横浜東が考える、子どもの成長ステップ</h2>
@@ -61,7 +53,6 @@ const categories = [
       ))}
     </div>
 
-    <!-- 理念 -->
     <div class="philosophy">
       <span class="section-label">PHILOSOPHY</span>
       <h2 class="philosophy__title">親子で夢中になれる、かけがえのない時間。</h2>
@@ -73,7 +64,6 @@ const categories = [
     <div class="about-cta">
       <a href="/contact" class="btn btn--primary">体験参加のお問い合わせ →</a>
     </div>
-
   </div>
 
 </Layout>
@@ -82,33 +72,33 @@ const categories = [
 @use 'var' as *;
 
 .about-wrap {
-  padding-top: 40px;
-  padding-bottom: 60px;
+  padding-top: 4.0rem;
+  padding-bottom: 6.0rem;
 }
 
 .about-intro {
-  font-size: 14px;
+  font-size: $fs-md; // 1.5rem = 15px
   color: $text-secondary;
   line-height: 1.8;
-  margin-bottom: 48px;
-  max-width: 800px;
+  margin-bottom: 4.8rem;
+  max-width: 80rem;
 }
 
 .steps-header {
-  margin-bottom: 24px;
+  margin-bottom: 2.4rem;
 
   &__note {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
-    margin-top: 4px;
+    margin-top: 0.4rem;
   }
 }
 
 .steps-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
-  margin-bottom: 48px;
+  gap: 1.6rem;
+  margin-bottom: 4.8rem;
 
   @include pc { grid-template-columns: repeat(3, 1fr); }
 }
@@ -127,37 +117,37 @@ const categories = [
 
   &__badge {
     position: absolute;
-    top: calc(9/16 * 100% - 14px);
+    top: calc(9/16 * 100% - 1.4rem);
     left: 0;
     background: $navy;
     color: $cyan;
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     font-weight: 700;
-    padding: 4px 12px;
+    padding: 0.4rem 1.2rem;
   }
 
-  &__body { padding: 20px; }
+  &__body { padding: 2.0rem; }
 
   &__meta {
     display: flex;
     align-items: baseline;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
   }
 
   &__title {
-    font-size: 20px;
+    font-size: $fs-xl; // 2.0rem = 20px
     font-weight: 700;
     color: $text-primary;
   }
 
   &__label {
-    font-size: 10px;
+    font-size: $fs-xs; // 1.0rem = 10px
     color: $text-muted;
   }
 
   &__age {
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     color: $text-muted;
     margin-left: auto;
   }
@@ -165,18 +155,18 @@ const categories = [
   &__divider {
     height: 1px;
     background: $border;
-    margin-bottom: 12px;
+    margin-bottom: 1.2rem;
   }
 
   &__concept {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     font-weight: 700;
     color: $text-primary;
-    margin-bottom: 8px;
+    margin-bottom: 0.8rem;
   }
 
   &__desc {
-    font-size: 12px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     line-height: 1.75;
   }
@@ -185,22 +175,22 @@ const categories = [
 .philosophy {
   background: $navy-mid;
   border-radius: 8px;
-  padding: 32px;
-  margin-bottom: 32px;
+  padding: 3.2rem;
+  margin-bottom: 3.2rem;
 
   &__title {
-    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-size: clamp(#{$fs-lg}, 2.5vw, #{$fs-2xl}); // 18px〜24px
     font-weight: 700;
     color: $text-primary;
-    margin: 8px 0 16px;
+    margin: 0.8rem 0 1.6rem;
     line-height: 1.4;
   }
 
   &__text {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     color: $text-secondary;
     line-height: 1.8;
-    max-width: 700px;
+    max-width: 70rem;
   }
 }
 

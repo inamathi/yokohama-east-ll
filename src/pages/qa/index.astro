@@ -48,15 +48,15 @@ const qaItems = [
 @use 'var' as *;
 
 .qa-wrap {
-  padding-top: 40px;
-  padding-bottom: 60px;
+  padding-top: 4.0rem;
+  padding-bottom: 6.0rem;
 }
 
 .qa-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
-  margin-bottom: 48px;
+  gap: 1.2rem;
+  margin-bottom: 4.8rem;
 
   @include pc { grid-template-columns: repeat(2, 1fr); }
 }
@@ -64,17 +64,17 @@ const qaItems = [
 .qa-card {
   background: $navy-mid;
   border-radius: 8px;
-  padding: 20px;
+  padding: 2.0rem;
 
   &__q {
     display: flex;
-    gap: 12px;
+    gap: 1.2rem;
     align-items: flex-start;
-    margin-bottom: 12px;
+    margin-bottom: 1.2rem;
   }
 
   &__q-label {
-    font-size: 15px;
+    font-size: $fs-lg; // 1.8rem = 18px
     font-weight: 700;
     color: $cyan;
     flex-shrink: 0;
@@ -82,7 +82,7 @@ const qaItems = [
   }
 
   &__q-text {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     font-weight: 700;
     color: $text-primary;
     line-height: 1.6;
@@ -91,17 +91,17 @@ const qaItems = [
   &__divider {
     height: 1px;
     background: $border;
-    margin-bottom: 12px;
+    margin-bottom: 1.2rem;
   }
 
   &__a {
     display: flex;
-    gap: 12px;
+    gap: 1.2rem;
     align-items: flex-start;
   }
 
   &__a-label {
-    font-size: 15px;
+    font-size: $fs-lg; // 1.8rem = 18px
     font-weight: 700;
     color: $text-muted;
     flex-shrink: 0;
@@ -109,7 +109,7 @@ const qaItems = [
   }
 
   &__a-text {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     color: $text-secondary;
     line-height: 1.75;
   }
@@ -118,13 +118,13 @@ const qaItems = [
 .qa-cta {
   background: $navy-mid;
   border-radius: 8px;
-  padding: 24px;
+  padding: 2.4rem;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.6rem;
   align-items: flex-start;
 
-  p { font-size: 13px; color: $text-secondary; }
+  p { font-size: $fs-base; color: $text-secondary; }
 
   @include pc {
     flex-direction: row;

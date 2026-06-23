@@ -60,39 +60,39 @@ const currentPath = Astro.url.pathname;
   &__inner {
     display: flex;
     align-items: center;
-    gap: 24px;
-    height: 60px;
+    gap: 2.4rem;
+    height: 6.0rem;
     padding: 0 $margin-mobile;
 
     @include pc {
-      height: 72px;
+      height: 7.2rem;
       padding: 0 $margin-pc;
     }
   }
 
   &__logo {
-    font-size: 14px;
+    font-size: $fs-md; // 1.5rem = 15px
     font-weight: 700;
     color: $text-primary;
     white-space: nowrap;
 
-    @include pc { font-size: 16px; }
+    @include pc { font-size: $fs-lg; } // 1.8rem = 18px
   }
 
   &__nav {
     display: none;
     align-items: center;
-    gap: 4px;
+    gap: 0.4rem;
     margin-left: auto;
 
     @include pc { display: flex; }
   }
 
   &__nav-item {
-    font-size: 13px;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     color: $text-secondary;
-    padding: 6px 12px;
+    padding: 0.6rem 1.2rem;
     border-radius: 4px;
     transition: color 0.2s, background 0.2s;
     white-space: nowrap;
@@ -105,15 +105,15 @@ const currentPath = Astro.url.pathname;
 
   &__cta {
     display: none;
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     font-weight: 700;
     background: $orange;
     color: $white;
-    padding: 8px 14px;
+    padding: 0.8rem 1.4rem;
     border-radius: 4px;
     white-space: nowrap;
     transition: opacity 0.2s;
-    margin-left: 8px;
+    margin-left: 0.8rem;
 
     &:hover { opacity: 0.85; }
 
@@ -124,20 +124,20 @@ const currentPath = Astro.url.pathname;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 6px;
-    width: 32px;
-    height: 32px;
+    gap: 0.6rem;
+    width: 3.2rem;
+    height: 3.2rem;
     background: none;
     border: none;
     cursor: pointer;
     margin-left: auto;
-    padding: 4px;
+    padding: 0.4rem;
 
     @include pc { display: none; }
 
     span {
       display: block;
-      width: 22px;
+      width: 2.2rem;
       height: 2px;
       background: $text-primary;
       border-radius: 1px;
@@ -145,9 +145,9 @@ const currentPath = Astro.url.pathname;
     }
 
     &.is-open {
-      span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      span:nth-child(1) { transform: translateY(0.8rem) rotate(45deg); }
       span:nth-child(2) { opacity: 0; }
-      span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+      span:nth-child(3) { transform: translateY(-0.8rem) rotate(-45deg); }
     }
   }
 }
@@ -178,34 +178,34 @@ const currentPath = Astro.url.pathname;
     position: absolute;
     top: 0;
     right: 0;
-    width: min(280px, 80vw);
+    width: min(28.0rem, 80vw);
     height: 100%;
     background: $navy-mid;
-    padding: 80px 24px 32px;
+    padding: 8.0rem 2.4rem 3.2rem;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4rem;
     transform: translateX(100%);
     transition: transform 0.3s ease;
   }
 
   &__item {
-    font-size: 15px;
+    font-size: $fs-md; // 1.5rem = 15px
     font-weight: 700;
     color: $text-secondary;
-    padding: 12px 8px;
+    padding: 1.2rem 0.8rem;
     border-bottom: 1px solid $border;
 
     &:hover { color: $text-primary; }
   }
 
   &__cta {
-    margin-top: 24px;
-    font-size: 13px;
+    margin-top: 2.4rem;
+    font-size: $fs-base; // 1.3rem = 13px
     font-weight: 700;
     background: $orange;
     color: $white;
-    padding: 14px 20px;
+    padding: 1.4rem 2.0rem;
     border-radius: 6px;
     text-align: center;
   }

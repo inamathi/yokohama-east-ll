@@ -7,27 +7,26 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 <Layout title="試合結果 | 横浜東リトルリーグ">
 
   <div class="page-title-bar">
-    <div class="container">
-      <h1>試合結果</h1>
-      <p class="sub">RESULTS</p>
-    </div>
-  </div>
-
-  <div class="results-wrap container">
-
-    <!-- タブ + フィルター -->
-    <div class="tab-bar">
-      <button class="tab-btn is-active" data-tab="all">すべて</button>
-      <button class="tab-btn" data-tab="メジャー">メジャー</button>
-      <button class="tab-btn" data-tab="マイナー">マイナー</button>
-      <button class="tab-btn" data-tab="ジュニア">ジュニア</button>
+    <div class="container page-title-bar__inner">
+      <div>
+        <h1>試合結果</h1>
+        <p class="sub">RESULTS</p>
+      </div>
       <button class="filter-btn" id="filterBtn" aria-label="絞り込み">
         <span class="filter-icon"></span>
         <span class="filter-label">絞り込み</span>
       </button>
     </div>
+  </div>
 
-    <!-- フィルターパレット -->
+  <div class="results-wrap container">
+    <div class="tab-bar">
+      <button class="tab-btn is-active" data-tab="all">すべて</button>
+      <button class="tab-btn" data-tab="メジャー">メジャー</button>
+      <button class="tab-btn" data-tab="マイナー">マイナー</button>
+      <button class="tab-btn" data-tab="ジュニア">ジュニア</button>
+    </div>
+
     <div class="filter-palette" id="filterPalette" aria-hidden="true">
       <div class="filter-overlay" id="filterOverlay"></div>
       <div class="filter-panel">
@@ -50,11 +49,9 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
       </div>
     </div>
 
-    <!-- 結果リスト -->
     <div class="results-list" id="resultsList">
       <div class="results-loading">読み込み中…</div>
     </div>
-
   </div>
 
 </Layout>
@@ -62,33 +59,37 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 <style lang="scss">
 @use 'var' as *;
 
-.results-wrap {
-  padding-top: 0;
-  padding-bottom: 48px;
+.page-title-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-// ── タブバー ──
+.results-wrap {
+  padding-top: 0;
+  padding-bottom: 4.8rem;
+}
+
 .tab-bar {
   display: flex;
   align-items: stretch;
   background: $navy-mid;
   border-bottom: 1px solid $border;
-  position: relative;
 }
 
 .tab-btn {
   flex: 1;
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   font-weight: 700;
   color: $text-muted;
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  padding: 12px 4px;
+  padding: 1.2rem 0.4rem;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 
-  @include pc { font-size: 13px; padding: 14px 16px; flex: none; }
+  @include pc { font-size: $fs-base; padding: 1.4rem 1.6rem; flex: none; }
 
   &.is-active {
     color: $text-primary;
@@ -99,14 +100,13 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 .filter-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  padding: 10px 16px;
-  background: none;
+  gap: 0.6rem;
+  padding: 0.8rem 1.2rem;
+  background: rgba(255,255,255,0.08);
   border: none;
-  border-left: 1px solid $border;
+  border-radius: 4px;
   color: $text-muted;
-  font-size: 12px;
+  font-size: $fs-base; // 1.3rem = 13px
   font-weight: 700;
   cursor: pointer;
 
@@ -117,6 +117,7 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
   display: flex;
   flex-direction: column;
   gap: 3px;
+  width: 1.4rem;
 
   &::before, &::after {
     content: '';
@@ -125,13 +126,12 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
     background: currentColor;
     border-radius: 1px;
   }
-  &::before { width: 14px; }
-  &::after  { width: 8px; }
+  &::before { width: 1.4rem; }
+  &::after  { width: 0.8rem; }
 }
 
 .filter-label { display: none; @include pc { display: block; } }
 
-// ── フィルターパレット ──
 .filter-palette {
   position: fixed;
   inset: 0;
@@ -155,24 +155,24 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 
 .filter-panel {
   position: absolute;
-  top: 60px;
+  top: 6.0rem;
   left: 0;
   right: 0;
   background: #1c2a48;
-  padding: 20px $margin-mobile;
+  padding: 2.0rem $margin-mobile;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  transform: translateY(-8px);
+  gap: 2.0rem;
+  transform: translateY(-0.8rem);
   opacity: 0;
   transition: transform 0.25s, opacity 0.25s;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 1.2rem 4.0rem rgba(0,0,0,0.5);
 
   @include pc {
-    top: 72px;
+    top: 7.2rem;
     left: auto;
-    right: 64px;
-    width: 320px;
+    right: 6.4rem;
+    width: 32rem;
     border-radius: 0 0 8px 8px;
   }
 }
@@ -180,10 +180,10 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 .filter-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.8rem;
 
   &__label {
-    font-size: 11px;
+    font-size: $fs-sm; // 1.1rem = 11px
     font-weight: 700;
     color: $text-muted;
   }
@@ -193,8 +193,8 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
     color: $text-primary;
     border: 1px solid $border;
     border-radius: 6px;
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: 1.0rem 1.2rem;
+    font-size: $fs-base; // 1.3rem = 13px
     font-family: $font-body;
     width: 100%;
   }
@@ -202,14 +202,14 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 
 .filter-radios {
   display: flex;
-  gap: 20px;
+  gap: 2.0rem;
 }
 
 .filter-radio {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 0.8rem;
+  font-size: $fs-base; // 1.3rem = 13px
   color: $text-secondary;
   cursor: pointer;
 
@@ -219,30 +219,28 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
 .filter-ok {
   background: $cyan;
   color: $navy;
-  font-size: 14px;
+  font-size: $fs-md; // 1.5rem = 15px
   font-weight: 700;
   border: none;
   border-radius: 6px;
-  padding: 12px;
+  padding: 1.2rem;
   cursor: pointer;
   transition: opacity 0.2s;
-  margin-top: 4px;
 
   &:hover { opacity: 0.85; }
 }
 
-// ── 結果リスト ──
 .results-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 16px;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
 }
 
 .results-loading {
-  font-size: 13px;
+  font-size: $fs-base; // 1.3rem = 13px
   color: $text-muted;
-  padding: 24px 0;
+  padding: 2.4rem 0;
   text-align: center;
 }
 
@@ -252,49 +250,29 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5l
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 1.2rem;
+  padding: 1.2rem 1.6rem;
 
   &__left {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.4rem;
     align-items: flex-start;
   }
 
-  &__date {
-    font-size: 10px;
-    color: $text-muted;
-  }
-
-  &__game {
-    font-size: 12px;
-    font-weight: 700;
-    color: $text-secondary;
-  }
-
-  &__symbol {
-    font-size: 13px;
-    font-weight: 700;
-  }
+  &__date { font-size: $fs-xs; color: $text-muted; }
+  &__game { font-size: $fs-base; font-weight: 700; color: $text-secondary; }
+  &__symbol { font-size: $fs-base; font-weight: 700; }
 
   &__right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 2px;
+    gap: 0.2rem;
   }
 
-  &__score {
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  &__opponent {
-    font-size: 13px;
-    font-weight: 700;
-    color: $text-primary;
-  }
+  &__score    { font-size: $fs-lg; font-weight: 700; }
+  &__opponent { font-size: $fs-base; font-weight: 700; color: $text-primary; }
 
   &--win  .result-card__score, &--win  .result-card__symbol { color: $result-win; }
   &--draw .result-card__score, &--draw .result-card__symbol { color: $result-draw; }
@@ -307,7 +285,6 @@ let allResults = [];
 let currentTab = 'all';
 let currentType = 'all';
 
-// サンプルデータ（GAS未実装の間）
 const sampleData = [
   { date: "2026.06.22", cat: "メジャー", game: "全国選抜神奈川連盟大会１回戦", score: "13 - 3", opponent: "湘南連合",   result: "WIN",  type: "公式戦" },
   { date: "2026.06.22", cat: "マイナー", game: "オープン戦",                   score: "4 - 4",  opponent: "港北LL",     result: "DRAW", type: "OP戦"  },
@@ -317,7 +294,7 @@ const sampleData = [
   { date: "2026.06.08", cat: "メジャー", game: "オープン戦",                   score: "1 - 4",  opponent: "中区LL",     result: "LOSE", type: "OP戦"  },
 ];
 
-const catClass = { "メジャー": "major", "マイナー": "minor", "ジュニア": "junior" };
+const catClass     = { "メジャー": "major", "マイナー": "minor", "ジュニア": "junior" };
 const resultSymbol = { WIN: "○", DRAW: "△", LOSE: "●" };
 const resultClass  = { WIN: "win", DRAW: "draw", LOSE: "lose" };
 
@@ -361,7 +338,6 @@ async function loadResults() {
   renderResults();
 }
 
-// タブ切り替え
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is-active'));
@@ -371,7 +347,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
-// フィルター
 const filterBtn     = document.getElementById('filterBtn');
 const filterPalette = document.getElementById('filterPalette');
 const filterOverlay = document.getElementById('filterOverlay');
