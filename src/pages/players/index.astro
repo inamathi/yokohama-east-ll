@@ -1,0 +1,282 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const tabs = [
+  { id: "major",  label: "メジャー",  commentLabel: "好きな言葉" },
+  { id: "minor",  label: "マイナー",  commentLabel: "好きな野球選手" },
+  { id: "junior", label: "ジュニア",  commentLabel: "ひとこと" },
+  { id: "alumni", label: "卒団生",    commentLabel: "5年後の自分へ" },
+];
+
+const samplePlayers = {
+  major:  [
+    { name: "Taro. Y",  grade: "6年生", comment: "Never give up" },
+    { name: "Kenji. M", grade: "6年生", comment: "一球入魂" },
+    { name: "Shu. T",   grade: "5年生", comment: "全力疾走" },
+    { name: "Riku. A",  grade: "5年生", comment: "諦めない" },
+  ],
+  minor:  [
+    { name: "Haruto. K", grade: "4年生", comment: "大谷翔平" },
+    { name: "Sota. N",   grade: "4年生", comment: "山田哲人" },
+  ],
+  junior: [
+    { name: "Ren. O",  grade: "2年生", comment: "やきゅうたのしい！" },
+    { name: "Hana. F", grade: "1年生", comment: "ほーむらんうちたい" },
+  ],
+  alumni: [],
+};
+---
+
+<Layout title="選手紹介 | 横浜東リトルリーグ">
+
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>選手紹介</h1>
+      <p class="sub">PLAYERS</p>
+    </div>
+  </div>
+
+  <!-- タブバー -->
+  <div class="tab-bar">
+    <div class="container tab-bar__inner">
+      {tabs.map((tab, i) => (
+        <button
+          class={`tab-btn ${i === 0 ? "is-active" : ""}`}
+          data-tab={tab.id}
+          data-comment-label={tab.commentLabel}
+        >
+          {tab.label}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- 第12期バナー -->
+  <div class="alumni-banner">
+    <div class="container alumni-banner__inner">
+      <span class="alumni-banner__title">第12期（2026卒団）</span>
+      <span class="alumni-banner__desc">「5年後の自分へ」のメッセージを掲載</span>
+      <button class="alumni-banner__link" data-tab="alumni">見る →</button>
+    </div>
+  </div>
+
+  <!-- 選手グリッド -->
+  <div class="container players-wrap">
+    <div class="players-grid" id="playersGrid">
+      <!-- JSで描画 -->
+    </div>
+  </div>
+
+</Layout>
+
+<style lang="scss">
+@use 'var' as *;
+
+.tab-bar {
+  background: $navy-mid;
+  border-bottom: 1px solid $border;
+
+  &__inner {
+    display: flex;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.tab-btn {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-muted;
+  background: none;
+  border: none;
+  border-top: 2px solid transparent;
+  padding: 12px 4px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+
+  @include pc { font-size: 13px; padding: 14px 24px; flex: none; }
+
+  &.is-active {
+    color: $text-primary;
+    border-top-color: $cyan;
+  }
+}
+
+.alumni-banner {
+  background: #123464;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-primary;
+    white-space: nowrap;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: $text-secondary;
+    flex: 1;
+  }
+
+  &__link {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-primary;
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover { color: $cyan; }
+  }
+}
+
+.players-wrap {
+  padding-top: 24px;
+  padding-bottom: 60px;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @include tablet { grid-template-columns: repeat(3, 1fr); }
+  @include pc     { grid-template-columns: repeat(4, 1fr); }
+}
+
+.player-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: $text-muted;
+  }
+
+  &__body { padding: 12px; }
+
+  &__name {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 2px;
+  }
+
+  &__grade {
+    font-size: 10px;
+    color: $text-muted;
+    margin-bottom: 8px;
+  }
+
+  &__comment-label {
+    font-size: 8px;
+    font-weight: 700;
+    color: $cyan;
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  &__comment {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.5;
+  }
+}
+
+.empty-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 13px;
+  color: $text-muted;
+  padding: 48px 0;
+}
+</style>
+
+<script>
+const players = {
+  major:  [
+    { name: "Taro. Y",   grade: "6年生", comment: "Never give up" },
+    { name: "Kenji. M",  grade: "6年生", comment: "一球入魂" },
+    { name: "Shu. T",    grade: "5年生", comment: "全力疾走" },
+    { name: "Riku. A",   grade: "5年生", comment: "諦めない" },
+    { name: "Daiki. H",  grade: "5年生", comment: "勝利のみ" },
+    { name: "Yuto. S",   grade: "6年生", comment: "日々精進" },
+  ],
+  minor:  [
+    { name: "Haruto. K", grade: "4年生", comment: "大谷翔平" },
+    { name: "Sota. N",   grade: "4年生", comment: "山田哲人" },
+    { name: "Yui. S",    grade: "3年生", comment: "佐々木朗希" },
+  ],
+  junior: [
+    { name: "Ren. O",    grade: "2年生", comment: "やきゅうたのしい！" },
+    { name: "Hana. F",   grade: "1年生", comment: "ほーむらんうちたい" },
+  ],
+  alumni: [
+    { name: "Kento. M",  grade: "2026卒", comment: "5年後は野球続けてたい" },
+    { name: "Ai. T",     grade: "2026卒", comment: "自信を持って生きていけ" },
+  ],
+};
+
+const commentLabels = {
+  major: "好きな言葉", minor: "好きな野球選手",
+  junior: "ひとこと", alumni: "5年後の自分へ",
+};
+
+let currentTab = "major";
+
+function render() {
+  const grid = document.getElementById("playersGrid");
+  const list = players[currentTab] || [];
+  const label = commentLabels[currentTab];
+
+  if (list.length === 0) {
+    grid.innerHTML = '<p class="empty-message">選手情報を準備中です</p>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p => `
+    <div class="player-card">
+      <div class="player-card__photo">photo</div>
+      <div class="player-card__body">
+        <p class="player-card__name">${p.name}</p>
+        <p class="player-card__grade">${p.grade}</p>
+        <span class="player-card__comment-label">${label}</span>
+        <p class="player-card__comment">${p.comment}</p>
+      </div>
+    </div>
+  `).join("");
+}
+
+function switchTab(tabId: string) {
+  currentTab = tabId;
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.classList.toggle("is-active", btn.getAttribute("data-tab") === tabId);
+  });
+  render();
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab") || "major"));
+});
+
+document.querySelector(".alumni-banner__link")?.addEventListener("click", () => switchTab("alumni"));
+
+render();
+</script>

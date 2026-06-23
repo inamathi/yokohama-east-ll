@@ -1,0 +1,194 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="グラウンド | 横浜東リトルリーグ">
+
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>グラウンド</h1>
+      <p class="sub">GROUND & ACCESS</p>
+    </div>
+  </div>
+
+  <div class="container ground-wrap">
+
+    <div class="ground-grid">
+
+      <!-- 左：マップ -->
+      <div class="ground-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3247.0!2d139.6!3d35.4!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDI0JzAwLjAiTiAxMznCsDM2JzAwLjAiRQ!5e0!3m2!1sja!2sjp!4v1"
+          width="100%"
+          height="400"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
+      <!-- 右：アクセス情報 -->
+      <div class="ground-info">
+
+        <div class="ground-alert">
+          <span class="ground-alert__icon">！</span>
+          <div>
+            <p class="ground-alert__title">車での送迎が必要です</p>
+            <p class="ground-alert__desc">グラウンドへは公共交通機関のみでのアクセスが困難です。</p>
+          </div>
+        </div>
+
+        <div class="ground-detail">
+          <div class="ground-detail__row">
+            <span class="ground-detail__label">住所</span>
+            <span class="ground-detail__value">〒000-0000 神奈川県横浜市○○区○○</span>
+          </div>
+          <div class="ground-detail__row">
+            <span class="ground-detail__label">駐車場</span>
+            <span class="ground-detail__value">グラウンド隣接駐車場あり（無料）</span>
+          </div>
+          <div class="ground-detail__row">
+            <span class="ground-detail__label">アクセス</span>
+            <span class="ground-detail__value">車でのご来場をお願いしています</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 写真ギャラリー -->
+    <div class="gallery">
+      <h2 class="gallery__title">グラウンドの様子</h2>
+      <div class="gallery__grid">
+        {[1,2,3,4].map(i => (
+          <div class="gallery__photo">
+            <span class="gallery__photo-label">写真 {i}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+
+</Layout>
+
+<style lang="scss">
+@use 'var' as *;
+
+.ground-wrap {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+.ground-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+
+  @include pc { grid-template-columns: 1fr 380px; }
+}
+
+.ground-map {
+  border-radius: 8px;
+  overflow: hidden;
+  iframe { display: block; width: 100%; }
+}
+
+.ground-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ground-alert {
+  display: flex;
+  gap: 12px;
+  background: rgba(255, 183, 77, 0.1);
+  border-left: 4px solid #ffb74d;
+  border-radius: 0 8px 8px 0;
+  padding: 16px;
+
+  &__icon {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffb74d;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffb74d;
+    margin-bottom: 4px;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
+}
+
+.ground-detail {
+  background: $navy-mid;
+  border-radius: 8px;
+  padding: 16px;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid $border;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__label {
+    font-size: 11px;
+    font-weight: 700;
+    color: $cyan;
+    line-height: 1.6;
+  }
+
+  &__value {
+    font-size: 13px;
+    color: $text-primary;
+    line-height: 1.6;
+  }
+}
+
+.gallery {
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+
+    @include pc { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  &__photo {
+    aspect-ratio: 4/3;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__photo-label {
+    font-size: 11px;
+    color: $text-muted;
+  }
+}
+</style>

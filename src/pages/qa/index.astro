@@ -1,0 +1,135 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const qaItems = [
+  { q: "費用はどのくらいかかりますか？",    a: "入団費・月会費・ユニフォーム代などが必要です。詳細は体験参加時にご説明します。" },
+  { q: "親の当番はどのくらいありますか？",  a: "土日の試合・練習時に保護者のサポートをお願いしています。当番は月に2〜3回程度。無理のない範囲で分担しています。" },
+  { q: "野球未経験でも入れますか？",        a: "もちろんです。ジュニアカテゴリはキャッチボールからスタート。コーチが丁寧に指導します。" },
+  { q: "何歳から入団できますか？",          a: "小学1年生から入団できます。カテゴリはジュニア・マイナー・メジャーに分かれており、学年・技術に合わせて配属します。" },
+  { q: "道具は最初から必要ですか？",        a: "体験参加中は不要です。入団後はグローブ・バットなど順次ご用意ください。購入の相談にも乗ります。" },
+  { q: "練習は週何回ありますか？",          a: "基本は土日の週2回。平日練習は月に数回あります。学校行事との調整も柔軟に対応しています。" },
+];
+---
+
+<Layout title="Q&A | 横浜東リトルリーグ">
+
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>よくある質問</h1>
+      <p class="sub">Q&A</p>
+    </div>
+  </div>
+
+  <div class="container qa-wrap">
+    <div class="qa-grid">
+      {qaItems.map(item => (
+        <div class="qa-card">
+          <div class="qa-card__q">
+            <span class="qa-card__q-label">Q</span>
+            <p class="qa-card__q-text">{item.q}</p>
+          </div>
+          <div class="qa-card__divider"></div>
+          <div class="qa-card__a">
+            <span class="qa-card__a-label">A</span>
+            <p class="qa-card__a-text">{item.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="qa-cta">
+      <p>他にご不明な点はお気軽にどうぞ</p>
+      <a href="/contact" class="btn btn--primary">お問い合わせ・体験参加申し込み →</a>
+    </div>
+  </div>
+
+</Layout>
+
+<style lang="scss">
+@use 'var' as *;
+
+.qa-wrap {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.qa-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 48px;
+
+  @include pc { grid-template-columns: repeat(2, 1fr); }
+}
+
+.qa-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  padding: 20px;
+
+  &__q {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  &__q-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: $cyan;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+
+  &__q-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.6;
+  }
+
+  &__divider {
+    height: 1px;
+    background: $border;
+    margin-bottom: 12px;
+  }
+
+  &__a {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  &__a-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-muted;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+
+  &__a-text {
+    font-size: 13px;
+    color: $text-secondary;
+    line-height: 1.75;
+  }
+}
+
+.qa-cta {
+  background: $navy-mid;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+
+  p { font-size: 13px; color: $text-secondary; }
+
+  @include pc {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+</style>

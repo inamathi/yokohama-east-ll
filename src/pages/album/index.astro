@@ -1,0 +1,96 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const sampleAlbums = [
+  { ym: "2026年6月", slug: "2026-06", count: 24 },
+  { ym: "2026年5月", slug: "2026-05", count: 18 },
+  { ym: "2026年4月", slug: "2026-04", count: 31 },
+  { ym: "2026年3月", slug: "2026-03", count: 12 },
+  { ym: "2026年2月", slug: "2026-02", count: 20 },
+  { ym: "2026年1月", slug: "2026-01", count: 9  },
+];
+---
+
+<Layout title="アルバム | 横浜東リトルリーグ">
+
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>アルバム</h1>
+      <p class="sub">ALBUM</p>
+    </div>
+  </div>
+
+  <div class="container album-wrap">
+    <div class="album-grid">
+      {sampleAlbums.map(album => (
+        <a href={`/album/${album.slug}`} class="album-card">
+          <div class="album-card__thumb">
+            <span class="album-card__thumb-label">photo</span>
+          </div>
+          <div class="album-card__body">
+            <p class="album-card__ym">{album.ym}</p>
+            <p class="album-card__count">{album.count}枚</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+</Layout>
+
+<style lang="scss">
+@use 'var' as *;
+
+.album-wrap {
+  padding-top: 32px;
+  padding-bottom: 60px;
+}
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @include tablet { grid-template-columns: repeat(3, 1fr); }
+  @include pc     { grid-template-columns: repeat(4, 1fr); }
+}
+
+.album-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: opacity 0.2s;
+
+  &:hover { opacity: 0.8; }
+
+  &__thumb {
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__thumb-label {
+    font-size: 11px;
+    color: $text-muted;
+  }
+
+  &__body {
+    padding: 12px;
+  }
+
+  &__ym {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 2px;
+  }
+
+  &__count {
+    font-size: 11px;
+    color: $text-muted;
+  }
+}
+</style>

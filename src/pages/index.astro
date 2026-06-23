@@ -1,321 +1,407 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const latestNews = [
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5lvHNi8kMbiMZB-QU_VMXYQE7of6b5eVaF6cF82fggJWPY/exec";
+
+const categories = [
   {
-    tag: "お知らせ",
-    date: "2025-05-01",
-    title: "新入団選手募集中 — 体験練習随時受付",
+    step: "01",
+    label: "JUNIOR",
+    title: "ジュニア",
+    age: "〜小3の夏",
+    concept: "まず、野球を好きになる。",
+    desc: "キャッチボールから始め、野球の楽しさを体全体で覚える時期。うまくできなくていい。グラウンドに来るのが楽しみになることが、すべての出発点です。",
   },
   {
-    tag: "試合結果",
-    date: "2025-04-20",
-    title: "練習試合 vs 港南リトルリーグ 7-3 勝利",
+    step: "02",
+    label: "MINOR",
+    title: "マイナー",
+    age: "小3の夏〜小5の夏",
+    concept: "基礎技術を、着実に身につける。",
+    desc: "投げる・打つ・守るの基本を反復練習で固める時期。仲間と競い合いながら、自分の成長を実感できるステージです。",
   },
   {
-    tag: "大会情報",
-    date: "2025-04-10",
-    title: "春季大会 一回戦突破！次戦は5/18",
+    step: "03",
+    label: "MAJOR",
+    title: "メジャー",
+    age: "小5の夏〜",
+    concept: "野球を深く理解し、中学へつなぐ。",
+    desc: "リーグ戦・地区大会を戦いながら、戦術・判断力・チームワークを磨く時期。この経験が中学野球への大きな土台になります。",
   },
 ];
-
-const calendarIds = [
-  "yellweb1972@gmail.com",
-  "bqkct1fj8coo6ercf8rrgsste0@group.calendar.google.com",
-  "1lf6lqeapdv7dkcbp93jsrt30k@group.calendar.google.com",
-  "lat305u00k6lrfatpqldpef5m0@group.calendar.google.com",
-];
-
-const calendarSrc = calendarIds
-  .map((id) => `src=${encodeURIComponent(id)}`)
-  .join("&");
-
-const calendarUrl = `https://calendar.google.com/calendar/embed?${calendarSrc}&ctz=Asia%2FTokyo&hl=ja&mode=MONTH&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=1`;
 ---
 
 <Layout title="横浜東リトルリーグ">
+
   <!-- ヒーロー -->
   <section class="hero">
-    <div class="hero-content">
-      <p class="hero-label">Yokohama East Little League</p>
-      <h1>振らなきゃ<em>ヒット</em>は生まれない！</h1>
-      <p class="hero-sub">
-        何事もチャレンジしなければ結果はわかりません<br />
-        神奈川東部を拠点に活動するリトルリーグ。<br
-        />小学生から野球を始めたい子、大歓迎です。
-      </p>
-      <div class="hero-btns">
-        <a href="/schedule" class="btn btn-primary">練習／試合日程を見る</a>
-        <a href="/contact" class="btn btn-outline">お問い合わせ</a>
+    <div class="hero__left">
+      <div class="hero__accent"></div>
+      <p class="hero__sub">野球で育つ、仲間と育つ。</p>
+      <h1 class="hero__title">横浜東<br />リトルリーグ</h1>
+      <p class="hero__desc">神奈川東地区・小学生対象<br />体験参加はいつでも歓迎！</p>
+      <a href="/contact" class="btn btn--primary">体験参加のお問い合わせ →</a>
+    </div>
+    <div class="hero__right">
+      <div class="hero__photo-placeholder">キービジュアル写真</div>
+    </div>
+  </section>
+
+  <!-- 活動予定 -->
+  <section class="schedule-section">
+    <div class="container">
+      <span class="section-label">SCHEDULE</span>
+      <h2 class="section-title">直近の活動予定</h2>
+      <div class="schedule-grid" id="schedule-grid">
+        {["メジャー","マイナー","ジュニア"].map(cat => (
+          <div class="schedule-col">
+            <div class={`schedule-col__header schedule-col__header--${cat === "メジャー" ? "major" : cat === "マイナー" ? "minor" : "junior"}`}>
+              {cat}
+            </div>
+            <div class="schedule-col__list" data-category={cat}>
+              <div class="schedule-loading">読み込み中…</div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- ニュース -->
-  <section class="section">
-    <div class="section-header">
-      <h2 class="section-title">Latest <span>News</span></h2>
-      <div class="section-line"></div>
-      <a href="/news" class="section-more">すべて見る →</a>
-    </div>
-    <div class="news-grid">
-      {
-        latestNews.map((item) => (
-          <article class="news-card">
-            <div class="tag">{item.tag}</div>
-            <h3>{item.title}</h3>
-            <p class="date">{item.date}</p>
-          </article>
-        ))
-      }
+  <!-- リード文 -->
+  <section class="lead-section">
+    <div class="container">
+      <p class="lead-section__text">
+        お子さんの「やってみたい」をそのまま連れてきてください。<br />
+        体験参加は無料。道具も不要。まず見学だけでも大歓迎です。
+      </p>
+      <a href="/contact" class="btn btn--primary">体験参加のお問い合わせ →</a>
     </div>
   </section>
 
-  <!-- カレンダー -->
-  <section class="section">
-    <div class="section-header">
-      <h2 class="section-title">Schedule <span>カレンダー</span></h2>
-      <div class="section-line"></div>
-      <a href="/schedule" class="section-more">詳細を見る →</a>
+  <!-- カテゴリ紹介 -->
+  <section class="category-section">
+    <div class="container">
+      <span class="section-label">CATEGORY</span>
+      <h2 class="section-title">リトルリーグのカテゴリを紹介</h2>
+      <div class="category-grid">
+        {categories.map(cat => (
+          <div class="category-card">
+            <div class="category-card__photo"></div>
+            <div class="category-card__body">
+              <div class="category-card__meta">
+                <span class="category-card__step">STEP {cat.step}</span>
+                <span class="category-card__label">{cat.label}</span>
+                <span class="category-card__age">{cat.age}</span>
+              </div>
+              <p class="category-card__concept">{cat.concept}</p>
+              <p class="category-card__desc">{cat.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-    <div class="calendar-legend">
-      <span class="legend-item legend-all">横浜東全体</span>
-      <span class="legend-item legend-major">メジャー</span>
-      <span class="legend-item legend-junior">ジュニア</span>
-      <span class="legend-item legend-minor">マイナー</span>
-    </div>
-    <div class="calendar-wrap">
-      <iframe
-        src={calendarUrl}
-        style="height:600px;"
-        frameborder="0"
-        scrolling="no"></iframe>
-    </div>
-    <p class="calendar-note">
-      ※
-      予定は変更になる場合があります。最新情報はLINEグループでもお知らせします。
-    </p>
   </section>
+
+  <!-- スポンサー -->
+  <section class="sponsor-section">
+    <div class="container">
+      <span class="section-label">SPONSORS</span>
+      <div class="sponsor-grid">
+        {[1,2,3].map(() => (
+          <div class="sponsor-placeholder"></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </Layout>
 
 <style lang="scss">
-  @import "../styles/global.scss";
+@use 'var' as *;
 
-  // ヒーロー
-  .hero {
-    background: linear-gradient(135deg, $navy 0%, #0d2244 60%, #071830 100%);
-    min-height: 500px;
+// ── ヒーロー ──
+.hero {
+  background: $navy-mid;
+  display: flex;
+  flex-direction: column;
+
+  @include pc {
+    flex-direction: row;
+    min-height: 560px;
+  }
+
+  &__left {
+    padding: 48px $margin-mobile 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+    @include pc {
+      flex: 0 0 50%;
+      padding: 80px $margin-pc;
+    }
+  }
+
+  &__accent {
+    width: 4px;
+    height: 60px;
+    background: $pink;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  &__sub {
+    font-size: 13px;
+    font-weight: 700;
+    color: $cyan;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  &__desc {
+    font-size: 14px;
+    color: $text-secondary;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  &__right {
+    flex: 1;
+    min-height: 240px;
+    background: rgba(255,255,255,0.05);
     display: flex;
     align-items: center;
-    padding: 4rem 1.5rem;
+    justify-content: center;
 
-    &-content {
-      max-width: 600px;
-    }
-
-    &-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: $orange;
-      border: 1px solid $orange;
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      margin-bottom: 1rem;
-    }
-
-    h1 {
-      font-family: $font-display;
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-
-      em {
-        font-style: normal;
-        color: $orange;
-      }
-    }
-
-    &-sub {
-      color: #aac0d5;
-      font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    &-btns {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
+    @include pc { min-height: unset; }
   }
 
-  // ボタン
-  .btn {
-    font-family: $font-display;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.75rem 1.75rem;
-    border-radius: 3px;
-    transition: all 0.2s;
-    cursor: pointer;
-
-    &-primary {
-      background: $orange;
-      color: $white;
-
-      &:hover {
-        background: $orange-lt;
-        transform: translateY(-2px);
-      }
-    }
-
-    &-outline {
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      color: $white;
-
-      &:hover {
-        border-color: $white;
-        background: rgba(255, 255, 255, 0.08);
-      }
-    }
+  &__photo-placeholder {
+    font-size: 14px;
+    color: $text-muted;
   }
+}
 
-  // セクション共通
-  .section {
-    padding: 3rem 1.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
+// ── 活動予定 ──
+.schedule-section {
+  background: $navy;
+  padding: 40px 0;
+  border-top: 1px solid $border;
+}
 
-    &-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
 
-    &-title {
-      font-family: $font-display;
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-
-      span {
-        color: $orange;
-      }
-    }
-
-    &-line {
-      flex: 1;
-      height: 2px;
-      background: linear-gradient(90deg, #{$orange} 0%, transparent 100%);
-    }
-
-    &-more {
-      font-size: 0.8rem;
-      color: $orange;
-      white-space: nowrap;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+  @include pc {
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  // ニュースカード
-  .news-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .news-card {
-    background: #102040;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 6px;
-    padding: 1.25rem;
-    transition:
-      border-color 0.2s,
-      transform 0.2s;
-
-    &:hover {
-      border-color: $orange;
-      transform: translateY(-3px);
-    }
-
-    .tag {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: $orange;
-      margin-bottom: 0.5rem;
-    }
-
-    h3 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      line-height: 1.4;
-    }
-
-    .date {
-      font-size: 0.78rem;
-      color: $gray;
-    }
-  }
-
-  // カレンダー
-  .calendar-legend {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .legend-item {
-    font-size: 0.78rem;
+.schedule-col {
+  &__header {
+    font-size: 13px;
     font-weight: 700;
-    padding: 0.2rem 0.75rem;
-    border-radius: 2px;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    border-left: 3px solid;
 
-    &.legend-all {
-      background: rgba(213, 204, 255, 0.2);
-      color: #d5ccff;
-    }
-    &.legend-major {
-      background: rgba(59, 26, 189, 0.3);
-      color: #a090ef;
-    }
-    &.legend-minor {
-      background: rgba(255, 144, 33, 0.2);
-      color: #ff9021;
-    }
-    &.legend-junior {
-      background: rgba(75, 153, 210, 0.2);
-      color: #4b99d2;
+    &--major  { border-color: $cat-major-bg;  color: $text-primary; }
+    &--minor  { border-color: $cat-minor-bg;  color: $text-primary; }
+    &--junior { border-color: $cat-junior-bg; color: $text-primary; }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.schedule-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+
+  &:nth-child(odd) { background: $navy-mid; }
+
+  &__date {
+    font-weight: 700;
+    color: $cyan;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  &__label { color: $text-secondary; }
+}
+
+.schedule-loading {
+  font-size: 12px;
+  color: $text-muted;
+  padding: 10px 12px;
+}
+
+// ── リード文 ──
+.lead-section {
+  background: $navy-mid;
+  padding: 40px 0;
+  border-top: 1px solid $border;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    @include pc {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 
-  .calendar-wrap {
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+  &__text {
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    font-weight: 700;
+    line-height: 1.7;
+    color: $text-primary;
+  }
+}
 
-    iframe {
-      width: 100%;
-      border: none;
-      display: block;
-    }
+// ── カテゴリ紹介 ──
+.category-section {
+  background: $navy;
+  padding: 48px 0;
+  border-top: 1px solid $border;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @include pc {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.category-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: rgba(255,255,255,0.05);
   }
 
-  .calendar-note {
-    font-size: 0.78rem;
-    color: $gray;
-    margin-top: 0.75rem;
+  &__body {
+    padding: 16px;
   }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__step {
+    font-size: 9px;
+    font-weight: 700;
+    color: $text-muted;
+  }
+
+  &__label {
+    font-size: 9px;
+    font-weight: 700;
+    color: $text-muted;
+  }
+
+  &__age {
+    font-size: 11px;
+    color: $text-muted;
+    margin-left: auto;
+  }
+
+  &__concept {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.75;
+  }
+}
+
+// ── スポンサー ──
+.sponsor-section {
+  background: $navy-mid;
+  padding: 32px 0;
+  border-top: 1px solid $border;
+}
+
+.sponsor-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.sponsor-placeholder {
+  width: 120px;
+  height: 56px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+}
 </style>
+
+<script define:vars={{ GAS_URL }}>
+// 週末スケジュールをGASから取得
+async function loadSchedule() {
+  try {
+    const res = await fetch(`${GAS_URL}?action=schedule`);
+    const data = await res.json();
+
+    const categories = ["メジャー", "マイナー", "ジュニア"];
+    categories.forEach(cat => {
+      const list = document.querySelector(`[data-category="${cat}"]`);
+      if (!list) return;
+
+      const items = (data[cat] || []).slice(0, 8);
+      if (items.length === 0) {
+        list.innerHTML = '<div class="schedule-loading">予定はありません</div>';
+        return;
+      }
+
+      list.innerHTML = items.map((item) => `
+        <div class="schedule-item">
+          <span class="schedule-item__date">${item.date}</span>
+          <span class="schedule-item__label">${item.label}</span>
+        </div>
+      `).join("");
+    });
+  } catch (e) {
+    document.querySelectorAll(".schedule-loading").forEach(el => {
+      el.textContent = "読み込みできませんでした";
+    });
+  }
+}
+
+loadSchedule();
+</script>

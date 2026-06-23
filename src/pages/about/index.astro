@@ -1,0 +1,208 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+const categories = [
+  {
+    step: "STEP 01", label: "JUNIOR", title: "ジュニア", age: "〜小3の夏",
+    concept: "まず、野球を好きになる。",
+    desc: "キャッチボールから始め、野球の楽しさを体全体で覚える時期。うまくできなくていい。グラウンドに来るのが楽しみになることが、すべての出発点です。",
+  },
+  {
+    step: "STEP 02", label: "MINOR", title: "マイナー", age: "小3の夏〜小5の夏",
+    concept: "基礎技術を、着実に身につける。",
+    desc: "投げる・打つ・守るの基本を反復練習で固める時期。仲間と競い合いながら、自分の成長を実感できるステージです。",
+  },
+  {
+    step: "STEP 03", label: "MAJOR", title: "メジャー", age: "小5の夏〜",
+    concept: "野球を深く理解し、中学へつなぐ。",
+    desc: "リーグ戦・地区大会を戦いながら、戦術・判断力・チームワークを磨く時期。この経験が中学野球への大きな土台になります。",
+  },
+];
+---
+
+<Layout title="リトルリーグとは | 横浜東リトルリーグ">
+
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>リトルリーグとは</h1>
+      <p class="sub">ABOUT LITTLE LEAGUE</p>
+    </div>
+  </div>
+
+  <div class="container about-wrap">
+
+    <p class="about-intro">
+      リトルリーグは1939年にアメリカで生まれた、世界100ヶ国以上で展開する国際的な少年野球組織です。横浜東リトルリーグは神奈川東地区に所属し、小学生年代の子どもたちが野球を通じて成長できる場を提供しています。
+    </p>
+
+    <!-- 成長ステップ -->
+    <div class="steps-header">
+      <span class="section-label">GROWTH STEPS</span>
+      <h2 class="section-title">横浜東が考える、子どもの成長ステップ</h2>
+      <p class="steps-header__note">カテゴリはただの年齢区分ではなく、成長の段階を表しています。</p>
+    </div>
+
+    <div class="steps-grid">
+      {categories.map(cat => (
+        <div class="step-card">
+          <div class="step-card__photo"></div>
+          <div class="step-card__badge">{cat.step}</div>
+          <div class="step-card__body">
+            <div class="step-card__meta">
+              <span class="step-card__title">{cat.title}</span>
+              <span class="step-card__label">{cat.label}</span>
+              <span class="step-card__age">{cat.age}</span>
+            </div>
+            <div class="step-card__divider"></div>
+            <p class="step-card__concept">{cat.concept}</p>
+            <p class="step-card__desc">{cat.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- 理念 -->
+    <div class="philosophy">
+      <span class="section-label">PHILOSOPHY</span>
+      <h2 class="philosophy__title">親子で夢中になれる、かけがえのない時間。</h2>
+      <p class="philosophy__text">
+        野球を通じて、視野の広さ・想像力・自己表現を育てる。勝敗を超えたところに、このスポーツの本当の豊かさがあると私たちは信じています。
+      </p>
+    </div>
+
+    <div class="about-cta">
+      <a href="/contact" class="btn btn--primary">体験参加のお問い合わせ →</a>
+    </div>
+
+  </div>
+
+</Layout>
+
+<style lang="scss">
+@use 'var' as *;
+
+.about-wrap {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.about-intro {
+  font-size: 14px;
+  color: $text-secondary;
+  line-height: 1.8;
+  margin-bottom: 48px;
+  max-width: 800px;
+}
+
+.steps-header {
+  margin-bottom: 24px;
+
+  &__note {
+    font-size: 13px;
+    color: $text-secondary;
+    margin-top: 4px;
+  }
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 48px;
+
+  @include pc { grid-template-columns: repeat(3, 1fr); }
+}
+
+.step-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+
+  &__photo {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: rgba(255,255,255,0.05);
+  }
+
+  &__badge {
+    position: absolute;
+    top: calc(9/16 * 100% - 14px);
+    left: 0;
+    background: $navy;
+    color: $cyan;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+  }
+
+  &__body { padding: 20px; }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__label {
+    font-size: 10px;
+    color: $text-muted;
+  }
+
+  &__age {
+    font-size: 11px;
+    color: $text-muted;
+    margin-left: auto;
+  }
+
+  &__divider {
+    height: 1px;
+    background: $border;
+    margin-bottom: 12px;
+  }
+
+  &__concept {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: $text-secondary;
+    line-height: 1.75;
+  }
+}
+
+.philosophy {
+  background: $navy-mid;
+  border-radius: 8px;
+  padding: 32px;
+  margin-bottom: 32px;
+
+  &__title {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: $text-primary;
+    margin: 8px 0 16px;
+    line-height: 1.4;
+  }
+
+  &__text {
+    font-size: 14px;
+    color: $text-secondary;
+    line-height: 1.8;
+    max-width: 700px;
+  }
+}
+
+.about-cta { text-align: center; }
+</style>

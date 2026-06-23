@@ -1,0 +1,234 @@
+---
+const navItems = [
+  { label: "リトルリーグとは", href: "/about" },
+  { label: "選手紹介",         href: "/players" },
+  { label: "試合結果",         href: "/results" },
+  { label: "グラウンド",       href: "/ground" },
+  { label: "Q&A",             href: "/qa" },
+  { label: "アルバム",         href: "/album" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="header">
+  <div class="header__inner">
+    <a href="/" class="header__logo">横浜東リトルリーグ</a>
+
+    <!-- PC nav -->
+    <nav class="header__nav">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class={`header__nav-item ${currentPath.startsWith(item.href) ? "is-active" : ""}`}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a href="/contact" class="header__cta">体験参加のお問い合わせ</a>
+
+    <!-- ハンバーガー -->
+    <button class="header__hamburger" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- モバイルドロワー -->
+<div class="drawer" aria-hidden="true">
+  <div class="drawer__overlay"></div>
+  <nav class="drawer__nav">
+    {navItems.map(item => (
+      <a href={item.href} class="drawer__item">{item.label}</a>
+    ))}
+    <a href="/contact" class="drawer__cta">体験参加のお問い合わせ</a>
+  </nav>
+</div>
+
+<style lang="scss">
+@use 'var' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: $navy;
+  border-bottom: 1px solid $border;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 60px;
+    padding: 0 $margin-mobile;
+
+    @include pc {
+      height: 72px;
+      padding: 0 $margin-pc;
+    }
+  }
+
+  &__logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-primary;
+    white-space: nowrap;
+
+    @include pc { font-size: 16px; }
+  }
+
+  &__nav {
+    display: none;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+
+    @include pc { display: flex; }
+  }
+
+  &__nav-item {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-secondary;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+
+    &:hover, &.is-active {
+      color: $text-primary;
+      background: rgba(255,255,255,0.06);
+    }
+  }
+
+  &__cta {
+    display: none;
+    font-size: 11px;
+    font-weight: 700;
+    background: $orange;
+    color: $white;
+    padding: 8px 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+    margin-left: 8px;
+
+    &:hover { opacity: 0.85; }
+
+    @include pc { display: block; }
+  }
+
+  &__hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 4px;
+
+    @include pc { display: none; }
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: $text-primary;
+      border-radius: 1px;
+      transition: transform 0.25s, opacity 0.25s;
+    }
+
+    &.is-open {
+      span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+      span:nth-child(2) { opacity: 0; }
+      span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    }
+  }
+}
+
+// ドロワー
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+
+  &.is-open {
+    pointer-events: auto;
+
+    .drawer__overlay { opacity: 1; }
+    .drawer__nav { transform: translateX(0); }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  &__nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(280px, 80vw);
+    height: 100%;
+    background: $navy-mid;
+    padding: 80px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  &__item {
+    font-size: 15px;
+    font-weight: 700;
+    color: $text-secondary;
+    padding: 12px 8px;
+    border-bottom: 1px solid $border;
+
+    &:hover { color: $text-primary; }
+  }
+
+  &__cta {
+    margin-top: 24px;
+    font-size: 13px;
+    font-weight: 700;
+    background: $orange;
+    color: $white;
+    padding: 14px 20px;
+    border-radius: 6px;
+    text-align: center;
+  }
+}
+</style>
+
+<script>
+const hamburger = document.querySelector('.header__hamburger');
+const drawer = document.querySelector('.drawer');
+const overlay = document.querySelector('.drawer__overlay');
+
+function toggleDrawer(open: boolean) {
+  hamburger?.setAttribute('aria-expanded', String(open));
+  hamburger?.classList.toggle('is-open', open);
+  drawer?.classList.toggle('is-open', open);
+  drawer?.setAttribute('aria-hidden', String(!open));
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+
+hamburger?.addEventListener('click', () => {
+  const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+  toggleDrawer(!isOpen);
+});
+
+overlay?.addEventListener('click', () => toggleDrawer(false));
+</script>

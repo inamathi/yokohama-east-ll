@@ -1,0 +1,61 @@
+// ===========================
+// カラートークン
+// ===========================
+$navy:        #0a1628;
+$navy-mid:    #112240;
+$navy-dark:   #07101f;
+$cyan:        #4db8d4;
+$cyan-light:  #7dd3e8;
+$pink:        #FF3D7F;
+$orange:      #ff6b35;
+$white:       #ffffff;
+
+// テキスト
+$text-primary:   rgba(255, 255, 255, 1);
+$text-secondary: rgba(255, 255, 255, 0.8);
+$text-muted:     rgba(255, 255, 255, 0.4);
+$text-subtle:    rgba(255, 255, 255, 0.15);
+
+// ボーダー
+$border:      rgba(255, 255, 255, 0.1);
+$border-mid:  rgba(255, 255, 255, 0.06);
+
+// 勝敗
+$result-win:  rgba(255, 255, 255, 1);
+$result-draw: rgba(255, 255, 255, 0.5);
+$result-lose: #64828C;
+
+// カテゴリバッジ
+$cat-major-bg:   #1e5aa0;
+$cat-major-text: #ffffff;
+$cat-minor-bg:   #ff6b35;
+$cat-minor-text: #ffffff;
+$cat-junior-bg:  #4db8d4;
+$cat-junior-text: #0a1628;
+
+// ===========================
+// タイポグラフィ
+// ===========================
+$font-display: "Oswald", "Noto Sans JP", sans-serif;
+$font-body:    "Noto Sans JP", sans-serif;
+
+// ===========================
+// レイアウト
+// ===========================
+$max-width:     1152px;
+$margin-pc:     64px;
+$margin-mobile: 20px;
+$gutter:        12px;
+
+// ===========================
+// ブレークポイント
+// ===========================
+$bp-tablet: 768px;
+$bp-pc:     1024px;
+
+@mixin tablet {
+  @media (min-width: #{$bp-tablet}) { @content; }
+}
+@mixin pc {
+  @media (min-width: #{$bp-pc}) { @content; }
+}

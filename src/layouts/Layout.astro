@@ -1,36 +1,33 @@
 ---
+import Header from "@/components/Header.astro";
+import "@/styles/global.scss";
+
 interface Props {
   title?: string;
+  description?: string;
 }
-const { title = "横浜東リトルリーグ" } = Astro.props;
+
+const {
+  title = "横浜東リトルリーグ",
+  description = "神奈川東地区の少年野球チーム。小学生対象。体験参加随時受付中。",
+} = Astro.props;
 ---
 
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
     <title>{title}</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="/src/styles/global.scss" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
-    <header>
-      <a href="/">横浜東リトルリーグ</a>
-      <nav>
-        <a href="/">HOME</a>
-        <a href="/news">ニュース</a>
-        <a href="/schedule">試合日程</a>
-        <a href="/results">試合結果</a>
-        <a href="/contact">お問い合わせ</a>
-      </nav>
-    </header>
-
+    <Header />
     <main>
       <slot />
     </main>
-
     <footer>
-      <p>© 2025 横浜東リトルリーグ</p>
+      <p>© 2026 横浜東リトルリーグ</p>
     </footer>
   </body>
 </html>

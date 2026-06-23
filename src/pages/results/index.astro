@@ -1,605 +1,395 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-const seasons = {
-  メジャー: [{ label: "2025-26", start: "2025-09-01", end: "2026-08-31" }],
-  マイナー: [{ label: "2025-26", start: "2025-09-01", end: "2026-08-31" }],
-  ジュニア: [{ label: "2025-26", start: "2025-09-01", end: "2026-08-31" }],
-};
-
-const results = [
-  {
-    date: "2025-10-20",
-    team: "メジャー",
-    type: "公式戦",
-    tournament: "秋季大会",
-    round: "1回戦",
-    venue: "横浜スタジアム補助",
-    opponent: "港南リトルリーグ",
-    our: 7,
-    opp: 3,
-    note: "",
-  },
-  {
-    date: "2025-10-13",
-    team: "メジャー",
-    type: "OPG",
-    tournament: "",
-    round: "",
-    venue: "保土ヶ谷球場",
-    opponent: "磯子リトルリーグ",
-    our: 2,
-    opp: 5,
-    note: "移行期の記録",
-  },
-  {
-    date: "2025-10-06",
-    team: "ジュニア",
-    type: "公式戦",
-    tournament: "秋季大会",
-    round: "2回戦",
-    venue: "横浜東公園",
-    opponent: "金沢リトルリーグ",
-    our: 4,
-    opp: 4,
-    note: "",
-  },
-  {
-    date: "2025-09-23",
-    team: "ジュニア",
-    type: "OPG",
-    tournament: "",
-    round: "",
-    venue: "根岸森林公園",
-    opponent: "鶴見リトルリーグ",
-    our: 6,
-    opp: 1,
-    note: "",
-  },
-  {
-    date: "2025-09-16",
-    team: "マイナー",
-    type: "公式戦",
-    tournament: "秋季大会",
-    round: "1回戦",
-    venue: "保土ヶ谷球場",
-    opponent: "旭リトルリーグ",
-    our: 3,
-    opp: 8,
-    note: "",
-  },
-  {
-    date: "2025-09-10",
-    team: "マイナー",
-    type: "OPG",
-    tournament: "",
-    round: "",
-    venue: "横浜東公園",
-    opponent: "戸塚リトルリーグ",
-    our: 5,
-    opp: 2,
-    note: "",
-  },
-];
-
-// map関数の中で <= と Fragment構文を混同させないための設定
-const inSeason = (date: string, start: string, end: string) =>
-  date >= start && date <= end;
-type TeamName = keyof typeof seasons;
-const teams = Object.keys(seasons) as TeamName[];
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzk5a9ycCom5ctNIl02Eu5lvHNi8kMbiMZB-QU_VMXYQE7of6b5eVaF6cF82fggJWPY/exec";
 ---
 
-<Layout title="試合結果">
-  <section class="page-hero">
-    <p class="hero-label">Game Results</p>
-    <h1>試合結果</h1>
-  </section>
+<Layout title="試合結果 | 横浜東リトルリーグ">
 
-  <section class="section">
-    <!-- タブバー -->
+  <div class="page-title-bar">
+    <div class="container">
+      <h1>試合結果</h1>
+      <p class="sub">RESULTS</p>
+    </div>
+  </div>
+
+  <div class="results-wrap container">
+
+    <!-- タブ + フィルター -->
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="一覧">一覧</button>
-      {
-        teams.map((team) =>
-          seasons[team]
-            .slice()
-            .sort((a, b) => b.start.localeCompare(a.start))
-            .map((season) => (
-              <button class="tab-btn" data-tab={`${team}__${season.label}`}>
-                {team}
-                <span class="season-label">（{season.label}）</span>
-              </button>
-            )),
-        )
-      }
-      <a href="/results/archive" class="tab-link">過去の結果 →</a>
+      <button class="tab-btn is-active" data-tab="all">すべて</button>
+      <button class="tab-btn" data-tab="メジャー">メジャー</button>
+      <button class="tab-btn" data-tab="マイナー">マイナー</button>
+      <button class="tab-btn" data-tab="ジュニア">ジュニア</button>
+      <button class="filter-btn" id="filterBtn" aria-label="絞り込み">
+        <span class="filter-icon"></span>
+        <span class="filter-label">絞り込み</span>
+      </button>
     </div>
 
-    <!-- 一覧タブ -->
-    <div class="tab-pane active" data-pane="一覧">
-      {
-        (["公式戦", "OPG"] as const).map((type) => (
-          <div>
-            <h2 class="table-heading">
-              {type === "OPG" ? "オープン戦（OPG）" : "公式戦"}
-            </h2>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>日付</th>
-                    <th>カテゴリ</th>
-                    {type === "公式戦" && <th>大会名</th>}
-                    {type === "公式戦" && <th>回戦</th>}
-                    <th>球場</th>
-                    <th>対戦相手</th>
-                    <th>スコア</th>
-                    <th>結果</th>
-                    <th>備考</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {results.filter((r) => r.type === type).length === 0 ? (
-                    <tr>
-                      <td colspan={type === "公式戦" ? 9 : 7} class="empty">
-                        データなし
-                      </td>
-                    </tr>
-                  ) : (
-                    results
-                      .filter((r) => r.type === type)
-                      .map((r) => {
-                        const result =
-                          r.our > r.opp
-                            ? "win"
-                            : r.our < r.opp
-                              ? "lose"
-                              : "draw";
-                        const label =
-                          result === "win"
-                            ? "○"
-                            : result === "lose"
-                              ? "●"
-                              : "△";
-                        return (
-                          <tr>
-                            <td>{r.date}</td>
-                            <td>
-                              <span class={`team-badge team-${r.team}`}>
-                                {r.team}
-                              </span>
-                            </td>
-                            {type === "公式戦" && <td>{r.tournament}</td>}
-                            {type === "公式戦" && <td>{r.round}</td>}
-                            <td>{r.venue}</td>
-                            <td>{r.opponent}</td>
-                            <td>
-                              <strong>
-                                {r.our} - {r.opp}
-                              </strong>
-                            </td>
-                            <td>
-                              <span class={`badge badge-${result}`}>
-                                {label}
-                              </span>
-                            </td>
-                            <td class="note">{r.note}</td>
-                          </tr>
-                        );
-                      })
-                  )}
-                </tbody>
-              </table>
-            </div>
+    <!-- フィルターパレット -->
+    <div class="filter-palette" id="filterPalette" aria-hidden="true">
+      <div class="filter-overlay" id="filterOverlay"></div>
+      <div class="filter-panel">
+        <div class="filter-field">
+          <label class="filter-field__label">年度</label>
+          <select class="filter-field__select" id="yearSelect">
+            <option value="2025-26">2025-26</option>
+            <option value="2024-25">2024-25</option>
+          </select>
+        </div>
+        <div class="filter-field">
+          <label class="filter-field__label">試合種別</label>
+          <div class="filter-radios">
+            <label class="filter-radio"><input type="radio" name="gameType" value="all" checked /> すべて</label>
+            <label class="filter-radio"><input type="radio" name="gameType" value="公式戦" /> 公式戦のみ</label>
+            <label class="filter-radio"><input type="radio" name="gameType" value="OP戦" /> OP戦のみ</label>
           </div>
-        ))
-      }
-    </div>
-
-    <!-- チーム別・年度別タブ -->
-    {
-      teams.map((team) =>
-        seasons[team]
-          .slice()
-          .sort((a, b) => b.start.localeCompare(a.start))
-          .map((season) => {
-            const filtered = results.filter(
-              (r) =>
-                r.team === team && inSeason(r.date, season.start, season.end),
-            );
-            const official = filtered.filter((r) => r.type === "公式戦");
-            const opg = filtered.filter((r) => r.type === "OPG");
-
-            return (
-              <Fragment>
-                <div class="tab-pane" data-pane={`${team}__${season.label}`}>
-                  <h2 class="table-heading">公式戦</h2>
-                  <div class="table-wrap">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>日付</th>
-                          <th>大会名</th>
-                          <th>回戦</th>
-                          <th>球場</th>
-                          <th>対戦相手</th>
-                          <th>スコア</th>
-                          <th>結果</th>
-                          <th>備考</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {official.length === 0 ? (
-                          <tr>
-                            <td colspan={8} class="empty">
-                              データなし
-                            </td>
-                          </tr>
-                        ) : (
-                          official.map((r) => {
-                            const result =
-                              r.our > r.opp
-                                ? "win"
-                                : r.our < r.opp
-                                  ? "lose"
-                                  : "draw";
-                            const label =
-                              result === "win"
-                                ? "○"
-                                : result === "lose"
-                                  ? "●"
-                                  : "△";
-                            return (
-                              <tr>
-                                <td>{r.date}</td>
-                                <td>{r.tournament}</td>
-                                <td>{r.round}</td>
-                                <td>{r.venue}</td>
-                                <td>{r.opponent}</td>
-                                <td>
-                                  <strong>
-                                    {r.our} - {r.opp}
-                                  </strong>
-                                </td>
-                                <td>
-                                  <span class={`badge badge-${result}`}>
-                                    {label}
-                                  </span>
-                                </td>
-                                <td class="note">{r.note}</td>
-                              </tr>
-                            );
-                          })
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <h2 class="table-heading" style="margin-top:2rem;">
-                    オープン戦（OPG）
-                  </h2>
-                  <div class="table-wrap">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>日付</th>
-                          <th>球場</th>
-                          <th>対戦相手</th>
-                          <th>スコア</th>
-                          <th>結果</th>
-                          <th>備考</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {opg.length === 0 ? (
-                          <tr>
-                            <td colspan={6} class="empty">
-                              データなし
-                            </td>
-                          </tr>
-                        ) : (
-                          opg.map((r) => {
-                            const result =
-                              r.our > r.opp
-                                ? "win"
-                                : r.our < r.opp
-                                  ? "lose"
-                                  : "draw";
-                            const label =
-                              result === "win"
-                                ? "○"
-                                : result === "lose"
-                                  ? "●"
-                                  : "△";
-                            return (
-                              <tr>
-                                <td>{r.date}</td>
-                                <td>{r.venue}</td>
-                                <td>{r.opponent}</td>
-                                <td>
-                                  <strong>
-                                    {r.our} - {r.opp}
-                                  </strong>
-                                </td>
-                                <td>
-                                  <span class={`badge badge-${result}`}>
-                                    {label}
-                                  </span>
-                                </td>
-                                <td class="note">{r.note}</td>
-                              </tr>
-                            );
-                          })
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </Fragment>
-            );
-          }),
-      )
-    }
-
-    <!-- 入力CTA -->
-    <div class="input-cta">
-      <div>
-        <h3>試合結果の入力</h3>
-        <p>父母・スタッフの方はこちらから入力してください</p>
+        </div>
+        <button class="filter-ok" id="filterOk">OK</button>
       </div>
-      <a href="/results/input" class="btn btn-primary">結果を入力する →</a>
     </div>
-  </section>
+
+    <!-- 結果リスト -->
+    <div class="results-list" id="resultsList">
+      <div class="results-loading">読み込み中…</div>
+    </div>
+
+  </div>
+
 </Layout>
 
 <style lang="scss">
-  @import "@/styles/global.scss";
+@use 'var' as *;
 
-  $cyan: #4b99d2;
+.results-wrap {
+  padding-top: 0;
+  padding-bottom: 48px;
+}
 
-  .page-hero {
-    background: linear-gradient(135deg, $navy 0%, #0d2244 100%);
-    border-bottom: 3px solid $orange;
-    padding: 3rem 1.5rem;
+// ── タブバー ──
+.tab-bar {
+  display: flex;
+  align-items: stretch;
+  background: $navy-mid;
+  border-bottom: 1px solid $border;
+  position: relative;
+}
 
-    .hero-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: $orange;
-      margin-bottom: 0.5rem;
-    }
+.tab-btn {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  color: $text-muted;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 4px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
 
-    h1 {
-      font-family: $font-display;
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
+  @include pc { font-size: 13px; padding: 14px 16px; flex: none; }
+
+  &.is-active {
+    color: $text-primary;
+    border-bottom-color: $cyan;
   }
+}
 
-  .section {
-    padding: 3rem 1.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
+.filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  border-left: 1px solid $border;
+  color: $text-muted;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover { color: $text-primary; }
+}
+
+.filter-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  &::before, &::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
   }
+  &::before { width: 14px; }
+  &::after  { width: 8px; }
+}
 
-  .tab-bar {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 0.5rem;
-    flex-wrap: wrap;
-    .tab-link {
-      font-family: $font-display;
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      padding: 0.45rem 1rem;
-      color: $gray;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 3px;
-      margin-left: auto;
-      transition: all 0.2s;
+.filter-label { display: none; @include pc { display: block; } }
 
-      &:hover {
-        border-color: rgba(255, 255, 255, 0.3);
-        color: $white;
-      }
-    }
+// ── フィルターパレット ──
+.filter-palette {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+
+  &.is-open {
+    pointer-events: auto;
+    .filter-overlay { opacity: 1; }
+    .filter-panel { transform: translateY(0); opacity: 1; }
   }
+}
 
-  .tab-btn {
-    font-family: $font-display;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 0.45rem 1rem;
-    background: transparent;
-    color: $gray;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    border-radius: 3px;
-    transition: all 0.2s;
+.filter-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
 
-    .season-label {
-      font-size: 0.72rem;
-      opacity: 0.8;
-    }
+.filter-panel {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: #1c2a48;
+  padding: 20px $margin-mobile;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transform: translateY(-8px);
+  opacity: 0;
+  transition: transform 0.25s, opacity 0.25s;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
 
-    &.active {
-      background: $white;
-      color: $navy;
-      border-color: $white;
-    }
-
-    &:hover:not(.active) {
-      border-color: rgba(255, 255, 255, 0.3);
-      color: $white;
-    }
+  @include pc {
+    top: 72px;
+    left: auto;
+    right: 64px;
+    width: 320px;
+    border-radius: 0 0 8px 8px;
   }
+}
 
-  .tab-pane {
-    display: none;
-    &.active {
-      display: block;
-    }
-  }
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
-  .table-heading {
-    font-family: $font-display;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: $white;
-    margin-bottom: 0.75rem;
-    padding-left: 0.75rem;
-    border-left: 3px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .table-wrap {
-    overflow-x: auto;
-    margin-bottom: 0.5rem;
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-
-    th {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: rgba(255, 255, 255, 0.5);
-      padding: 0.6rem 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: #ccdde6;
-      white-space: nowrap;
-    }
-
-    tr:hover td {
-      background: rgba(255, 255, 255, 0.03);
-    }
-
-    .empty {
-      text-align: center;
-      color: $gray;
-      padding: 1.5rem;
-    }
-
-    .note {
-      color: $gray;
-      font-size: 0.82rem;
-      white-space: normal;
-      min-width: 120px;
-    }
-  }
-
-  .team-badge {
-    font-size: 0.72rem;
+  &__label {
+    font-size: 11px;
     font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 2px;
-
-    &.team-メジャー {
-      background: rgba(59, 26, 189, 0.3);
-      color: #a090ef;
-    }
-    &.team-ジュニア {
-      background: rgba(75, 153, 210, 0.2);
-      color: #4b99d2;
-    }
-    &.team-マイナー {
-      background: rgba(255, 144, 33, 0.2);
-      color: #ff9021;
-    }
+    color: $text-muted;
   }
 
-  .badge {
-    font-size: 1rem;
-    font-weight: 700;
-
-    &-win {
-      color: $white;
-    }
-    &-lose {
-      color: $white;
-    }
-    &-draw {
-      color: $white;
-    }
+  &__select {
+    background: $navy-dark;
+    color: $text-primary;
+    border: 1px solid $border;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-family: $font-body;
+    width: 100%;
   }
+}
 
-  .input-cta {
-    margin-top: 2.5rem;
-    background: rgba(75, 153, 210, 0.08);
-    border: 1px solid rgba(75, 153, 210, 0.3);
-    border-radius: 8px;
-    padding: 1.5rem 2rem;
+.filter-radios {
+  display: flex;
+  gap: 20px;
+}
+
+.filter-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: $text-secondary;
+  cursor: pointer;
+
+  input { accent-color: $cyan; }
+}
+
+.filter-ok {
+  background: $cyan;
+  color: $navy;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 4px;
+
+  &:hover { opacity: 0.85; }
+}
+
+// ── 結果リスト ──
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.results-loading {
+  font-size: 13px;
+  color: $text-muted;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.result-card {
+  background: $navy-mid;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+
+  &__left {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    h3 {
-      font-family: $font-display;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-
-    p {
-      font-size: 0.85rem;
-      color: $gray;
-    }
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
   }
 
-  .btn {
-    font-family: $font-display;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.75rem 1.75rem;
-    border-radius: 3px;
-    transition: all 0.2s;
-
-    &-primary {
-      background: $cyan;
-      color: $white;
-
-      &:hover {
-        background: lighten($cyan, 10%);
-        transform: translateY(-2px);
-      }
-    }
+  &__date {
+    font-size: 10px;
+    color: $text-muted;
   }
+
+  &__game {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-secondary;
+  }
+
+  &__symbol {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  &__score {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &__opponent {
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &--win  .result-card__score, &--win  .result-card__symbol { color: $result-win; }
+  &--draw .result-card__score, &--draw .result-card__symbol { color: $result-draw; }
+  &--lose .result-card__score, &--lose .result-card__symbol { color: $result-lose; }
+}
 </style>
 
-<script>
-  document.querySelectorAll<HTMLButtonElement>(".tab-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".tab-btn")
-        .forEach((b) => b.classList.remove("active"));
-      document
-        .querySelectorAll<HTMLElement>(".tab-pane")
-        .forEach((p) => p.classList.remove("active"));
-      btn.classList.add("active");
-      const pane = document.querySelector<HTMLElement>(
-        `.tab-pane[data-pane="${btn.dataset.tab}"]`,
-      );
-      if (pane) pane.classList.add("active");
-    });
+<script define:vars={{ GAS_URL }}>
+let allResults = [];
+let currentTab = 'all';
+let currentType = 'all';
+
+// サンプルデータ（GAS未実装の間）
+const sampleData = [
+  { date: "2026.06.22", cat: "メジャー", game: "全国選抜神奈川連盟大会１回戦", score: "13 - 3", opponent: "湘南連合",   result: "WIN",  type: "公式戦" },
+  { date: "2026.06.22", cat: "マイナー", game: "オープン戦",                   score: "4 - 4",  opponent: "港北LL",     result: "DRAW", type: "OP戦"  },
+  { date: "2026.06.15", cat: "メジャー", game: "全国選抜神奈川連盟大会２回戦", score: "2 - 5",  opponent: "鶴見LL",     result: "LOSE", type: "公式戦" },
+  { date: "2026.06.15", cat: "ジュニア", game: "オープン戦",                   score: "6 - 1",  opponent: "緑区LL",     result: "WIN",  type: "OP戦"  },
+  { date: "2026.06.08", cat: "マイナー", game: "春季地区大会",                 score: "3 - 2",  opponent: "保土ヶ谷LL", result: "WIN",  type: "公式戦" },
+  { date: "2026.06.08", cat: "メジャー", game: "オープン戦",                   score: "1 - 4",  opponent: "中区LL",     result: "LOSE", type: "OP戦"  },
+];
+
+const catClass = { "メジャー": "major", "マイナー": "minor", "ジュニア": "junior" };
+const resultSymbol = { WIN: "○", DRAW: "△", LOSE: "●" };
+const resultClass  = { WIN: "win", DRAW: "draw", LOSE: "lose" };
+
+function renderResults() {
+  const list = document.getElementById('resultsList');
+  const filtered = allResults.filter(r => {
+    if (currentTab !== 'all' && r.cat !== currentTab) return false;
+    if (currentType !== 'all' && r.type !== currentType) return false;
+    return true;
   });
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="results-loading">該当する試合がありません</div>';
+    return;
+  }
+
+  list.innerHTML = filtered.map(r => `
+    <div class="result-card result-card--${resultClass[r.result]}">
+      <div class="result-card__left">
+        <span class="cat-badge cat-badge--${catClass[r.cat]}">${r.cat}</span>
+        <span class="result-card__date">${r.date}</span>
+        <span class="result-card__game">${r.game}</span>
+      </div>
+      <span class="result-card__symbol">${resultSymbol[r.result]}</span>
+      <div class="result-card__right">
+        <span class="result-card__score">${r.score}</span>
+        <span class="result-card__opponent">${r.opponent}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadResults() {
+  try {
+    const res = await fetch(`${GAS_URL}?action=results`);
+    const data = await res.json();
+    allResults = data.results || sampleData;
+  } catch {
+    allResults = sampleData;
+  }
+  renderResults();
+}
+
+// タブ切り替え
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    currentTab = btn.dataset.tab;
+    renderResults();
+  });
+});
+
+// フィルター
+const filterBtn     = document.getElementById('filterBtn');
+const filterPalette = document.getElementById('filterPalette');
+const filterOverlay = document.getElementById('filterOverlay');
+const filterOk      = document.getElementById('filterOk');
+
+function toggleFilter(open) {
+  filterPalette.classList.toggle('is-open', open);
+  filterPalette.setAttribute('aria-hidden', String(!open));
+}
+
+filterBtn?.addEventListener('click', () => toggleFilter(!filterPalette.classList.contains('is-open')));
+filterOverlay?.addEventListener('click', () => toggleFilter(false));
+filterOk?.addEventListener('click', () => {
+  const checked = document.querySelector('input[name="gameType"]:checked');
+  currentType = checked?.value || 'all';
+  renderResults();
+  toggleFilter(false);
+});
+
+loadResults();
 </script>
