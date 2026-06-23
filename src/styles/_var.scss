@@ -39,6 +39,17 @@ $cat-junior-text: #0a1628;
 $font-display: "Oswald", "Noto Sans JP", sans-serif;
 $font-body:    "Noto Sans JP", sans-serif;
 
+// フォントサイズ（1rem = 10px）
+$fs-xs:   1.0rem; // 10px
+$fs-sm:   1.1rem; // 11px
+$fs-base: 1.3rem; // 13px
+$fs-md:   1.5rem; // 15px  ← body基本サイズ
+$fs-lg:   1.8rem; // 18px
+$fs-xl:   2.0rem; // 20px
+$fs-2xl:  2.4rem; // 24px
+$fs-3xl:  3.2rem; // 32px
+$fs-4xl:  4.0rem; // 40px
+
 // ===========================
 // レイアウト
 // ===========================
